@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "timespan"
   gem.homepage = "http://github.com/kristianmandrup/timespan"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Use TimeSpans in ruby}
+  gem.description = %Q{Easy to calculate time distance in different units}
   gem.email = "kmandrup@gmail.com"
   gem.authors = ["Kristian Mandrup"]
   # dependencies defined in Gemfile

@@ -1,6 +1,16 @@
-= timespan
+= Timespan
 
-Description goes here.
+Use TimeSpans in Ruby :)
+
+Will calculate time diff in milliseconds between to dates, then allow you to get the time difference in some time unit as a number.
+
+```ruby
+	t = TimeSpan.new(Date.today, 3.days.ago)
+	t.to_days # => 3
+	t.to_weeks # => 0
+	t.to_secs # => 259200
+	t.to_hours = 10800
+``
 
 == Contributing to timespan
  
