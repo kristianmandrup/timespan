@@ -18,11 +18,11 @@ class TimeSpan
   	raise ArgumentError, "Not a valid argument for timespan comparison, was #{time}" unless valid_compare?(time)
   	case time
   	when TimeSpan
-  		millis <=> time.millis 
+  		millis <=> time.seconds
   	when Time  		
-    	millis <=> (time.usec * 1000)
+    	millis <=> time.to_i
     when Date, DateTime
-    	(time.to_time.usec * 1000)
+    	time.to_time.to_i
     when Integer
     	millis <=> time
     end
