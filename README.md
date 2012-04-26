@@ -12,6 +12,10 @@ Will calculate time diff in milliseconds between to dates, then allow you to get
 	t.to_hours = 10800
 ``
 
+== TODO
+
+Should use Duration for duration calculations!
+
 == Contributing to timespan
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet.

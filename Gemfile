@@ -2,6 +2,7 @@ source :rubygems
 
 group :test do
 	gem 'chronic'
+	gem 'ruby-duration'
 end
 
 group :development do
