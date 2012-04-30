@@ -1,6 +1,9 @@
 require 'duration'
+require 'spanner'
 
 class TimeSpan
+	class ParseError < StandardError; end
+
 	attr_reader :start_time, :end_time, :seconds
 
 	alias_method :start_date, :start_time
@@ -36,8 +39,20 @@ class TimeSpan
 	end
 
 	def duration= duration
-		raise ArgumentError, "the duration option must be set to a Duration instance" unless duration.kind_of? Duration
-		@duration = duration
+		@duration = case duration
+		when Duration
+			duration
+		when Integer, Hash
+			Duration.new duration
+		when String
+			begin				
+				Duration.new Spanner.parse(duration.gsub /and/, '')
+			rescue Exception => e
+				raise ParseError, "Internal error: Spanner couldn't parse String '#{duration}'"
+			end
+		else
+			raise ArgumentError, "the duration option must be set to any of: #{valid_duration_types}"
+		end		 
 		refresh! unless is_new?
 	end
 		
@@ -80,39 +95,57 @@ class TimeSpan
 	def to_milliseconds
 		@to_seconds ||= (seconds * 1000.0).round
 	end
-	alias_method :to_mils, 	 :to_milliseconds
-	alias_method :millis, 	 :to_mils
+	alias_method :to_mils, 	 			:to_milliseconds
+	alias_method :millis, 	 			:to_mils
+	alias_method :milliseconds, 	:to_mils
 
 	def to_minutes
 		@to_minutes ||= (to_seconds / 60.0).round
 	end
 	alias_method :to_m, 		:to_minutes
 	alias_method :to_mins, 	:to_minutes
+	alias_method :minutes, 	:to_minutes
 
 	def to_hours
 		@to_hours ||= (to_minutes / 60.0).round
 	end
-	alias_method :to_h, :to_hours
+	alias_method :to_h, 	:to_hours
+	alias_method :hrs, 		:to_hours
+	alias_method :hours, 	:to_hours
 
 	def to_days
-		@to_days ||= (to_hours / 24).round
+		@to_days ||= (to_hours / 24.0).round
 	end	
 	alias_method :to_d, :to_days
+	alias_method :days, :to_days
 
 	def to_weeks
-		@to_weeks ||= (to_days / 7).round
+		@to_weeks ||= (to_days / 7.0).round
 	end	
-	alias_method :to_w, :to_weeks
+	alias_method :to_w, 	:to_weeks
+	alias_method :weeks, 	:to_days
 
 	def to_months
-		@to_months ||= (to_days / 30).round
+		@to_months ||= (to_days / 30.0).round
 	end	
 	alias_method :to_mon, :to_months
+	alias_method :months, :to_months
 
 	def to_years
 		@to_years ||= (to_days.to_f / 365.25).round
 	end	
-	alias_method :to_y, :to_years
+	alias_method :to_y, 	:to_years
+	alias_method :years, 	:to_years
+
+	def to_decades
+		@to_decades ||= (to_years / 10.0).round
+	end	
+	alias_method :decades, 	:to_decades
+
+	def to_centuries
+		@to_centuries ||= (to_decades / 10.0).round
+	end	
+	alias_method :centuries, 	:to_centuries
 
 	def units
 		%w{seconds minutes hours days weeks months years}
@@ -120,13 +153,14 @@ class TimeSpan
 
 	protected
 
-	def set_with_options options = {}
+	def set_with_options options = {}		
 		case options
 		when Hash
 			duration 		= options[:duration]
-			@start_time = options[:from]
-			@end_time 	= options[:to]
-		when Integer
+			@start_time = options[:from] || options[:start]
+			@end_time 	= options[:to] || options[:end]
+		when Integer, String
+			duration   = options
 		else
 			raise ArgumentError, "Timespan must take Hash or Integer, was: #{options}"
 		end
@@ -167,6 +201,10 @@ class TimeSpan
 			instance_variable_set var_name, nil
 		end
 		set_seconds
+	end
+
+	def valid_duration_types
+		[Duration, String, Integer, Hash]
 	end
 
 	def valid_compare? time

@@ -1,6 +1,7 @@
 source :rubygems
 
 gem 'chronic'
+gem 'spanner'
 gem 'ruby-duration'
 
 group :test, :development do

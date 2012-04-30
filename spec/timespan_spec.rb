@@ -30,6 +30,23 @@ describe "Timespan" do
   	end
   end
 
+  describe 'set duration with String' do
+		let(:timespan)  { TimeSpan.new :from => from, :duration => "3 days" }
+
+  	it 'should be 3 days' do
+  		timespan.to_d.should == 3
+  	end
+  end
+
+  describe 'set duration with Spanner String including and' do
+		let(:timespan)  { TimeSpan.new :from => from, :duration => "3 days and 2 hours" }
+
+  	it 'should be 3 days and 2 hrs' do
+  		timespan.to_h.should == (24 * 3) + 2
+  	end
+  end
+
+
   describe 'set start_time to new' do
 		let(:timespan) { TimeSpan.new :from => from, :to => to }  	
 
