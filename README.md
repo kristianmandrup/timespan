@@ -15,7 +15,7 @@ Will calculate time diff in milliseconds between to dates, then allow you to get
 
 	t = TimeSpan.new(:from => Date.today, :duration => "7 weeks 3 days")	
 	t = TimeSpan.new(:from => 2.days.ago, :duration => "5 months and 2 weeks")	
-``
+```
 
 See specs for more examples of usage
 
