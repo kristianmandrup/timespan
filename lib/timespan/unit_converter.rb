@@ -7,6 +7,13 @@ class Timespan
 		alias_method :millis, 	 			:to_mils
 		alias_method :milliseconds, 	:to_mils
 
+		def seconds
+			@seconds 	||= duration.total
+		end
+			
+		alias_method :to_secs, 		:seconds
+		alias_method :to_seconds, :seconds
+
 		def to_minutes
 			@to_minutes ||= (to_seconds / 60.0).round
 		end

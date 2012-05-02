@@ -9,32 +9,42 @@ describe "Timespan" do
   	let(:from) { Chronic.parse("1 day ago") }
   	let(:to)   { Time.now }
 
-    describe '.compare == ' do    
+    describe '.compare == ' do  
+    	specify do 
+    		(subject == 1.day).should be_true
+    	end  
     end
 
     describe '.compare < ' do    
+    	specify do 
+    		(subject < 1.day).should be_false
+    	end
     end    
 
     describe '.compare > ' do    
+    	specify do 
+    		(subject > 1.day).should be_false
+    	end
     end    
   end
 
   context 'From 2 days ago until today' do
-    describe '.time_left' do
-      let(:timespan) { Timespan.new :from => "2 days ago", :to => Date.today }    
+    let(:timespan) { Timespan.new :from => "2 days ago", :to => "1 hour ago" }    
 
+    describe '.time_left' do
       it 'should have 0 days left' do
-        timespan.time_left.days.should == -0
+        timespan.time_left.days.should == 0
+      end
+
+      it 'should have 1 hour left' do
+        timespan.time_left.hrs.should == -1
       end
     end  
 
     describe '.expired?' do
-      let(:timespan) { Timespan.new :from => "2 days ago", :to => Date.today }    
-
       it 'should have 0 days left' do
         timespan.expired?.should be_true
       end
-    end  
-
+    end 
   end  
 end

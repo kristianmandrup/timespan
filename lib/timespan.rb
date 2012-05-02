@@ -1,11 +1,13 @@
 require 'duration'
+require 'chronic'
 require 'chronic_duration'
 require 'spanner'
 
+require 'timespan/unit_converter'
 require 'timespan/compare'
 require 'timespan/printer'
 require 'timespan/span'
-require 'timespan/unit_converter'
+
 
 class Timespan
 	include Span
@@ -40,18 +42,13 @@ class Timespan
 	end
 	alias_method :end_date=, :end_time=
 
-	def seconds
-		@seconds 	||= duration.total
-	end
-		
-	alias_method :to_secs, 		:seconds
-	alias_method :to_seconds, :seconds
-
 	def convert_to_time time
 		case time
 		when String
 			Chronic.parse(time)
-		when Date, Time, DateTime
+		when Date, DateTime
+			time.to_time
+		when Time
 			time
 		else
 			raise ArgumentError, "A valid time must be either a String, Date, Time or DateTime, was: #{time.inspect}"
@@ -93,8 +90,22 @@ class Timespan
 	end
 
 	def calculate!		
+		set_end_time		
+		set_start_time		
+		set_duration		
+		set_end_time	
+		set_start_time
+	end
+
+	def set_end_time
 		self.end_time 	= start_time 	- duration.total 	if missing_end_time?
+	end
+
+	def set_start_time
 		self.start_time = end_time 		- duration.total 	if missing_start_time?
+	end
+
+	def set_duration
 		self.duration 	= end_time 		- start_time 			if missing_duration?
 	end
 

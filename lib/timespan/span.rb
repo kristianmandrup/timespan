@@ -14,10 +14,12 @@ class Timespan
 			@duration = case duration
 			when Duration
 				duration
-			when Integer, Hash
+			when Numeric, Hash
 				Duration.new duration
 			when String
 				Duration.new parse_duration(duration)
+			else
+				raise ArgumentError, "Unsupported duration type: #{duration}"
 			end		 
 			refresh! unless is_new?			
 		end
