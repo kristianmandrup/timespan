@@ -8,6 +8,9 @@ require 'timespan/compare'
 require 'timespan/printer'
 require 'timespan/span'
 
+if defined?(Rails) && Rails::VERSION::STRING.to >= '3.1'
+	require 'duration/rails/engine' 
+end
 
 class Timespan
 	include Span
@@ -22,9 +25,20 @@ class Timespan
 	alias_method :start_date, :start_time
 	alias_method :end_date, 	:end_time
 
+	START_KEYS 			= [:start, :from]
+	END_KEYS 				= [:to, :end]
+	DURATION_KEYS 	= [:duration, :lasting]
+
+	ALL_KEYS = START_KEYS + END_KEYS + DURATION_KEYS
+
 	def initialize options = {}
 		@is_new = true
 
+		case options
+		when Numeric, Duration, String
+			options = {:duration => options}
+		end
+		
 		configure options		
 		
 		@is_new = false
@@ -39,6 +53,11 @@ class Timespan
 		end
 	end
 	alias_method :start_date=, :start_time=
+	
+	def from time
+		self.start_time =	time
+		self
+	end
 
 	def end_time= time
 		@end_time = convert_to_time time
@@ -49,6 +68,11 @@ class Timespan
 		end
 	end
 	alias_method :end_date=, :end_time=
+
+	def until time
+		self.end_time =	time
+		self
+	end
 
 	def convert_to_time time
 		case time
@@ -65,18 +89,30 @@ class Timespan
 
 	protected
 
-	def configure options = {}		
-		from 	= options[:from] || options[:start]
-		to 		= options[:to] || options[:end]
+	def first_from keys, options = {}
+		keys.select {|key| options[key] }.first
+	end
 
-		self.duration 		= options[:duration] if options[:duration]
+	def configure options = {}		
+		from 	= options[first_from START_KEYS, options]
+		to 		= options[first_from END_KEYS, options]
+		dur 	= options[first_from DURATION_KEYS, options]
+
+		self.duration 		= dur if dur
 		self.start_time 	= from if from
 		self.end_time 		= to if to
+
+		default_from_now! unless start_time || end_time
+
 		calculate_miss!
 	rescue Exception => e
 		calculate_miss!
 		validate!
 	end		
+
+	def default_from_now!
+		self.start_time = Time.now
+	end
 
 	def validate!	
 		raise ArgumentError, "#{valid_requirement}, was: #{current_config}" unless valid?

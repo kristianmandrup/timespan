@@ -1,3 +1,5 @@
+require 'i18n'
+
 class Timespan
 	class << self
 		attr_writer :time_format

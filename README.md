@@ -2,7 +2,7 @@
 
 Use Timespans in Ruby :)
 
-Will calculate time diff in milliseconds between to dates, then allow you to get the time difference in some time unit as a number.
+Will calculate time diff between two dates, then allow you to get the time difference in some time unit as a number.
 
 ```ruby
 	t = Timespan.new(:start => Date.today, :duration => 3.days.ago)
@@ -10,6 +10,10 @@ Will calculate time diff in milliseconds between to dates, then allow you to get
 	t.to_weeks # => 0
 	t.to_secs # => 259200
 	t.to_hours = 10800
+
+  t = Timespan.new("2 days") # from today
+
+  t = Timespan.new("3 hrs").from(2.days.from_now)
 
 	t = Timespan.new(:from => Date.today, :to => "6 weeks from now")	
 
@@ -19,12 +23,9 @@ Will calculate time diff in milliseconds between to dates, then allow you to get
 
 See specs for more examples of usage
 
-## TODO
-
-* use Duration for duration calculations!
-* Calculate start_time and end_time based on duration if not set explicitly!
-
 ## Spanner
+
+Internally Timespan uses Spanner to parse duration strings.
 
 `Spanner.parse('23 hours 12 minutes')
 
@@ -41,20 +42,25 @@ Duration.new(:weeks => 1, :days => 20).format("%w %~w and %d %~d") => "3 weeks a
 Duration locale file
 
 ```yaml
-pt:
+da:
   ruby_duration:
-  second: segundo
-  seconds: segundos
-  minute: minuto
-  minutes: minutos
-  hour: hora
-  hours: horas
-  day: dia
-  days: dias
-  week: semana
-  weeks: semanas
+    second: sekond
+    seconds: sekonder
+    minute: minut
+    minutes: minutter
+    hour: time
+    hours: timer
+    day: dag
+    days: dage
+    week: uge
+    weeks: uges
+    month: måned
+    months: måneder
+    year: år
+    years: år
 ```
 
+Duration datatype for Mongoid
 
 ```ruby
 require 'duration/mongoid'
@@ -63,13 +69,46 @@ class MyModel
   include Mongoid::Document
   field :duration, type => Duration
 end
-``
+```
+
+## Timespan i18n
+
+Timespan locale file
+
+```yaml
+da:
+  timespan:
+    from: fra
+    to: til
+    lasting: der varer ialt
+```
+
+## Timespan for Mongoid
+
+Custom Timespan datatype
+
+```ruby
+require 'timespan/mongoid'
+
+class MyModel
+  include Mongoid::Document
+  field :period, type => Timespan
+end
+```
 
 ## Chronic duration
 
+Is used to parse duration strings if Spanner can't be handle it
+
 `ChronicDuration.parse('4 minutes and 30 seconds')
 
-## Days and times
+### Endure
+
+Use the 'endure' gem based on the old "days_and_times".
+
+See: [days_and_times](https://github.com/kristianmandrup/days_and_times)
+
+Currently it also uses Duration, which conflicts with the 'ruby-duration' gem.
 
 ```
   1.day #=> A duration of 1 day

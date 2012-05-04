@@ -6,6 +6,27 @@ describe Timespan do
   let(:from) { Chronic.parse("1 day ago") }
   let(:to)   { Time.now }
 
+  context '2 days duration (from now - default)' do
+    let(:timespan) { Timespan.new :duration => "2 days"}
+
+    describe '.start_date' do
+      it 'should default to today' do
+        DateTime.parse(subject.start_date.to_s).strftime('%d %b %Y').should == Date.today.strftime('%d %b %Y')
+      end
+    end
+  end
+
+  context '3 hrs duration from now 2 days from now' do
+    let(:timespan) { Timespan.new("3 hrs").from(2.days.from_now) }
+
+    describe '.start_date' do
+      its(:start_date) { should be }
+      its(:end_date) { should be }
+      its(:duration) { should be_a Duration }
+    end
+  end
+
+
   context 'From and To with 1 day apart' do
   	let(:timespan) { Timespan.new :from => from, :to => to}
 

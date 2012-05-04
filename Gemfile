@@ -7,6 +7,8 @@ gem 'ruby-duration', :git => 'git://github.com/kristianmandrup/ruby-duration.git
 
 group :test, :development do
   gem "rspec", 		">= 2.8.0"
+  gem 'rails', 		'~> 3.2'
+  # gem 'i18n'
 end
 
 group :development do
