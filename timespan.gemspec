@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "timespan"
-  s.version = "0.2.1"
+  s.version = "0.2.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kristian Mandrup"]
@@ -35,6 +35,7 @@ Gem::Specification.new do |s|
     "lib/timespan/units.rb",
     "spec/spec_helper.rb",
     "spec/timespan/compare_spec.rb",
+    "spec/timespan/duration_macros_spec.rb",
     "spec/timespan/locales/duration_da.yml",
     "spec/timespan/mongoid/account.rb",
     "spec/timespan/mongoid/mongoid_timespan_spec.rb",
@@ -58,7 +59,7 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<chronic>, [">= 0"])
       s.add_runtime_dependency(%q<chronic_duration>, [">= 0"])
       s.add_runtime_dependency(%q<spanner>, [">= 0"])
-      s.add_runtime_dependency(%q<ruby-duration>, [">= 0"])
+      s.add_runtime_dependency(%q<ruby-duration>, ["~> 2.2.1"])
       s.add_development_dependency(%q<rspec>, [">= 2.8.0"])
       s.add_development_dependency(%q<rails>, ["~> 3.2"])
       s.add_development_dependency(%q<mongoid>, ["~> 2.4"])
@@ -71,7 +72,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<chronic>, [">= 0"])
       s.add_dependency(%q<chronic_duration>, [">= 0"])
       s.add_dependency(%q<spanner>, [">= 0"])
-      s.add_dependency(%q<ruby-duration>, [">= 0"])
+      s.add_dependency(%q<ruby-duration>, ["~> 2.2.1"])
       s.add_dependency(%q<rspec>, [">= 2.8.0"])
       s.add_dependency(%q<rails>, ["~> 3.2"])
       s.add_dependency(%q<mongoid>, ["~> 2.4"])
@@ -85,7 +86,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<chronic>, [">= 0"])
     s.add_dependency(%q<chronic_duration>, [">= 0"])
     s.add_dependency(%q<spanner>, [">= 0"])
-    s.add_dependency(%q<ruby-duration>, [">= 0"])
+    s.add_dependency(%q<ruby-duration>, ["~> 2.2.1"])
     s.add_dependency(%q<rspec>, [">= 2.8.0"])
     s.add_dependency(%q<rails>, ["~> 3.2"])
     s.add_dependency(%q<mongoid>, ["~> 2.4"])
