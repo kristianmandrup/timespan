@@ -19,7 +19,6 @@ class Timespan
   end
 
   module Compare
-
   	include Comparable
 
     def time_left time = nil
@@ -47,6 +46,15 @@ class Timespan
         seconds <=> time.to_i
       end
     end
+
+    def +(other)
+      self.duration += Duration.new(other)
+    end
+
+    def -(other)
+      self.duration -= Duration.new(other)
+    end
+
 
     def valid_compare? time
       valid_compare_types.any? {|type| time.kind_of? type }

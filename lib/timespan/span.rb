@@ -6,6 +6,8 @@ class Timespan
 
 		def duration= duration
 			@duration = case duration
+			when Timespan
+				duration.duration
 			when Duration
 				duration
 			when Numeric, Hash

@@ -7,6 +7,10 @@ module Mongoid
     class Timespan
       include Mongoid::Fields::Serializable
     
+      def self.instantiate(name, options = {})
+        super
+      end
+
       # Deserialize a Timespan given the hash stored by Mongodb
       #
       # @param [Hash] Timespan as hash
@@ -24,8 +28,10 @@ module Mongoid
       def serialize(value)
         return if value.blank?
         timespan = ::Timespan.new(value)
-        {:from => time_span.start_time, :to => time_span.end_time, :Timespan => time_span.Timespan}
+        {:from => timespan.start_time, :to => timespan.end_time, :duration => timespan.duration.total}
       end
     end
   end
 end
+
+TimeSpan = Mongoid::Fields::Timespan
