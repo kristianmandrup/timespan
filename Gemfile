@@ -3,8 +3,7 @@ source :rubygems
 gem 'chronic'
 gem 'chronic_duration'
 gem 'spanner'
-gem 'ruby-duration'
-gem 'days_and_times'
+gem 'ruby-duration', :git => 'git://github.com/kristianmandrup/ruby-duration.git'
 
 group :test, :development do
   gem "rspec", 		">= 2.8.0"

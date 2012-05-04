@@ -4,12 +4,6 @@ class Timespan
 	module Span
 		attr_reader :duration
 
-		def seconds= seconds
-			raise ArgumentError, "Must be a Numeric, was: #{seconds.inspect}" unless seconds.kind_of? Numeric
-			@seconds = seconds
-			refresh!	
-		end
-
 		def duration= duration
 			@duration = case duration
 			when Duration
@@ -20,9 +14,15 @@ class Timespan
 				Duration.new parse_duration(duration)
 			else
 				raise ArgumentError, "Unsupported duration type: #{duration}"
-			end		 
-			refresh! unless is_new?			
+			end	
+			unless is_new?
+				add_dirty :duration
+				refresh!
+				calculate!
+			end
 		end
+
+		protected
 
 		def parse_duration text
 			spanner_parse text

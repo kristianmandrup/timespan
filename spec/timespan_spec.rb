@@ -1,13 +1,13 @@
 require 'spec_helper'
 
-describe "Timespan" do
+describe Timespan do
 	subject { timespan }
+
+  let(:from) { Chronic.parse("1 day ago") }
+  let(:to)   { Time.now }
 
   context 'From and To with 1 day apart' do
   	let(:timespan) { Timespan.new :from => from, :to => to}
-
-  	let(:from) { Chronic.parse("1 day ago") }
-  	let(:to)   { Time.now }
 
     describe '.convert_to_time' do
       specify { subject.convert_to_time("1 day ago").to_s.should == 1.day.ago.to_s }
@@ -49,8 +49,28 @@ describe "Timespan" do
         @new_timespan.start_date = Chronic.parse("2 days ago")
       end
 
+      its(:duration) { should be_a Duration }
+      specify { subject.send(:dirty).should be_empty }
+
       it 'should have diff timespans' do
-        @old_timespan.to_d.should_not == @new_timespan.to_d
+        @old_timespan.days.should_not == @new_timespan.days
+      end
+    end
+
+    describe 'set end_time to new' do
+      let(:timespan) { Timespan.new :from => from, :to => to }    
+
+      before :each do
+        @old_timespan = timespan.clone
+        @new_timespan = timespan.clone
+        @new_timespan.end_date = Chronic.parse("5 days from now")
+      end
+
+      its(:duration) { should be_a Duration }
+      specify { subject.send(:dirty).should be_empty }
+
+      it 'should have diff timespans' do
+        @old_timespan.days.should_not == @new_timespan.days
       end
     end
   end

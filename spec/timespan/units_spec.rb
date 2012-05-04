@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Timespan" do
+describe Timespan::Units do
 	subject { timespan }
 
   context 'From and To with 1 day apart' do

@@ -3,7 +3,7 @@ require 'chronic'
 require 'chronic_duration'
 require 'spanner'
 
-require 'timespan/unit_converter'
+require 'timespan/units'
 require 'timespan/compare'
 require 'timespan/printer'
 require 'timespan/span'
@@ -13,7 +13,7 @@ class Timespan
 	include Span
 	include Printer
 	include Compare
-	include UnitConverter
+	include Units
 
 	class TimeParseError < StandardError; end	
 
@@ -31,14 +31,22 @@ class Timespan
 	end
 
 	def start_time= time
-		@start_time = convert_to_time time
-		refresh!
+		@start_time = convert_to_time time		
+		unless is_new?
+			refresh!
+			add_dirty :start
+			calculate!
+		end
 	end
 	alias_method :start_date=, :start_time=
 
 	def end_time= time
 		@end_time = convert_to_time time
-		refresh!
+		unless is_new?
+			add_dirty :end
+			refresh!
+			calculate!
+		end
 	end
 	alias_method :end_date=, :end_time=
 
@@ -63,9 +71,10 @@ class Timespan
 
 		self.duration 		= options[:duration] if options[:duration]
 		self.start_time 	= from if from
-		self.end_time 		= to if to		
+		self.end_time 		= to if to
+		calculate_miss!
 	rescue Exception => e
-		calculate!
+		calculate_miss!
 		validate!
 	end		
 
@@ -89,24 +98,59 @@ class Timespan
 		@is_new
 	end
 
-	def calculate!		
-		set_end_time		
-		set_start_time		
-		set_duration		
-		set_end_time	
-		set_start_time
+	def dirty
+		@dirty ||= []
+	end
+
+	def add_dirty type
+		reset_dirty if dirty.size > 2
+		dirty << type
+	end
+
+	def reset_dirty
+		@dirty = []
+	end
+
+	def dirty? type
+		dirty.include? type
+	end
+
+	def calculate!
+		set_duration unless dirty? :duration
+		set_start_time unless dirty? :start
+		set_end_time unless dirty? :end		
+	end
+
+	def calculate_miss!
+		set_end_time_miss
+		set_start_time_miss	
+		set_duration_miss
+		set_end_time_miss	
+		set_start_time_miss
+	end
+
+	def set_end_time_miss		
+		set_end_time if missing_end_time?
 	end
 
 	def set_end_time
-		self.end_time 	= start_time 	- duration.total 	if missing_end_time?
+		self.end_time = start_time - duration.total
+	end
+
+	def set_start_time_miss
+		 set_start_time if missing_start_time?
 	end
 
 	def set_start_time
-		self.start_time = end_time 		- duration.total 	if missing_start_time?
+		self.start_time = end_time - duration.total
+	end
+
+	def set_duration_miss
+		set_duration if missing_duration?
 	end
 
 	def set_duration
-		self.duration 	= end_time 		- start_time 			if missing_duration?
+		self.duration = end_time - start_time
 	end
 
 	def missing_end_time?
@@ -123,7 +167,6 @@ class Timespan
 
 	# reset all stored instance vars for units
 	def refresh!
-		calculate!
 		units.each do |unit| 
 			var_name = :"@#{unit}"
 			instance_variable_set var_name, nil

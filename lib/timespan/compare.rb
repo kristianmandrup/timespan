@@ -1,6 +1,6 @@
 class Timespan
   class TimeDuration
-    include Timespan::UnitConverter
+    include Timespan::Units
 
     attr_reader :duration, :reverse
 

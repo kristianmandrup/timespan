@@ -1,5 +1,5 @@
 class Timespan
-	module UnitConverter
+	module Units
 		def to_milliseconds
 			@to_seconds ||= (seconds * 1000.0).round
 		end
@@ -62,8 +62,31 @@ class Timespan
 		end	
 		alias_method :centuries, 	:to_centuries
 
-		def units
+		def self.duration_units
 			%w{seconds minutes hours days weeks months years}
+		end
+
+		def self.units
+			duration_units + %w{decades centuries}
+		end
+
+		def units
+			Timespan::Units.units
+		end
+
+		duration_units.each do |unit|
+			define_method :"#{unit}=" do |number|
+				raise ArgumentError, "Must be a Numeric, was: #{number.inspect}" unless number.kind_of? Numeric
+				self.duration = Duration.new(unit.to_sym => number)
+			end
+		end
+
+		def decades= number
+			self.years = number * 10
+		end
+
+		def centuries= number
+			self.decades = number * 10
 		end
 	end
 end

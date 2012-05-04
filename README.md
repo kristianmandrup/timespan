@@ -38,6 +38,24 @@ Duration.new(:weeks => 3, :days => 1).format("%w %~w and %d %~d") => "3 weeks an
 Duration.new(:weeks => 1, :days => 20).format("%w %~w and %d %~d") => "3 weeks and 6 days"
 ```
 
+Duration locale file
+
+```yaml
+pt:
+  ruby_duration:
+  second: segundo
+  seconds: segundos
+  minute: minuto
+  minutes: minutos
+  hour: hora
+  hours: horas
+  day: dia
+  days: dias
+  week: semana
+  weeks: semanas
+```
+
+
 ```ruby
 require 'duration/mongoid'
 
@@ -45,7 +63,7 @@ class MyModel
   include Mongoid::Document
   field :duration, type => Duration
 end
-```
+``
 
 ## Chronic duration
 
