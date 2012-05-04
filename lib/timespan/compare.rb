@@ -49,10 +49,12 @@ class Timespan
 
     def +(other)
       self.duration += Duration.new(other)
+      self
     end
 
     def -(other)
       self.duration -= Duration.new(other)
+      self
     end
 
 

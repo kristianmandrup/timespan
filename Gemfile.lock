@@ -1,8 +1,8 @@
 GIT
   remote: git://github.com/kristianmandrup/ruby-duration.git
-  revision: 002f43a5ad5b6191ae5ee218e532176005279384
+  revision: c9b47be02e4a35f7ed3bf7de909d583d14272be8
   specs:
-    ruby-duration (2.1.4)
+    ruby-duration (2.2.1)
       activesupport (>= 3.0.0)
       i18n
 
@@ -65,7 +65,7 @@ GEM
       activemodel (~> 3.1)
       mongo (~> 1.3)
       tzinfo (~> 0.3.22)
-    multi_json (1.3.2)
+    multi_json (1.3.4)
     numerizer (0.1.1)
     polyglot (0.3.3)
     rack (1.4.1)
@@ -130,6 +130,6 @@ DEPENDENCIES
   rails (~> 3.2)
   rdoc (>= 3.12)
   rspec (>= 2.8.0)
-  ruby-duration!
+  ruby-duration (~> 2.2.1)!
   simplecov (>= 0.5)
   spanner

@@ -20,7 +20,7 @@ describe Timespan::Units do
 	    it "spans 1 day" do
 	  		timespan.to_d.should == 1
 	    end
-	    its(:days) { seconds.should == 1 }
+	    its(:days) { should == 1 }
 	  end
 
 		describe '.hours' do

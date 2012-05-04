@@ -3,7 +3,7 @@ source :rubygems
 gem 'chronic'
 gem 'chronic_duration'
 gem 'spanner'
-gem 'ruby-duration', :git => 'git://github.com/kristianmandrup/ruby-duration.git'
+gem 'ruby-duration', '~> 2.2.1', :git => 'git://github.com/kristianmandrup/ruby-duration.git'
 
 group :test, :development do
   gem "rspec", 		">= 2.8.0"

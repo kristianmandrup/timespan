@@ -26,7 +26,6 @@ describe Timespan do
     end
   end
 
-
   context 'From and To with 1 day apart' do
   	let(:timespan) { Timespan.new :from => from, :to => to}
 
