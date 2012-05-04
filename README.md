@@ -90,11 +90,21 @@ Custom Timespan datatype
 ```ruby
 require 'timespan/mongoid'
 
-class MyModel
+class Account
   include Mongoid::Document
-  field :period, type => Timespan
+  field :period, :type => TimeSpan
 end
 ```
+
+Usage example:
+
+```ruby
+account = Account.create :period => {:duration => '2 days', :from => Date.today }
+
+account.period.start_date
+account.period.end_date
+account.period.days
+account.period.duration # => Duration
 
 ## Chronic duration
 
