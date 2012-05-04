@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "timespan"
-  s.version = "0.2.0"
+  s.version = "0.2.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kristian Mandrup"]
@@ -36,6 +36,9 @@ Gem::Specification.new do |s|
     "spec/spec_helper.rb",
     "spec/timespan/compare_spec.rb",
     "spec/timespan/locales/duration_da.yml",
+    "spec/timespan/mongoid/account.rb",
+    "spec/timespan/mongoid/mongoid_timespan_spec.rb",
+    "spec/timespan/mongoid/spec_helper.rb",
     "spec/timespan/printer_spec.rb",
     "spec/timespan/span_spec.rb",
     "spec/timespan/units_spec.rb",
@@ -58,6 +61,8 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<ruby-duration>, [">= 0"])
       s.add_development_dependency(%q<rspec>, [">= 2.8.0"])
       s.add_development_dependency(%q<rails>, ["~> 3.2"])
+      s.add_development_dependency(%q<mongoid>, ["~> 2.4"])
+      s.add_development_dependency(%q<bson>, ["~> 1.6"])
       s.add_development_dependency(%q<rdoc>, [">= 3.12"])
       s.add_development_dependency(%q<bundler>, [">= 1.0.0"])
       s.add_development_dependency(%q<jeweler>, [">= 1.8.3"])
@@ -69,6 +74,8 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<ruby-duration>, [">= 0"])
       s.add_dependency(%q<rspec>, [">= 2.8.0"])
       s.add_dependency(%q<rails>, ["~> 3.2"])
+      s.add_dependency(%q<mongoid>, ["~> 2.4"])
+      s.add_dependency(%q<bson>, ["~> 1.6"])
       s.add_dependency(%q<rdoc>, [">= 3.12"])
       s.add_dependency(%q<bundler>, [">= 1.0.0"])
       s.add_dependency(%q<jeweler>, [">= 1.8.3"])
@@ -81,6 +88,8 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<ruby-duration>, [">= 0"])
     s.add_dependency(%q<rspec>, [">= 2.8.0"])
     s.add_dependency(%q<rails>, ["~> 3.2"])
+    s.add_dependency(%q<mongoid>, ["~> 2.4"])
+    s.add_dependency(%q<bson>, ["~> 1.6"])
     s.add_dependency(%q<rdoc>, [">= 3.12"])
     s.add_dependency(%q<bundler>, [">= 1.0.0"])
     s.add_dependency(%q<jeweler>, [">= 1.8.3"])
