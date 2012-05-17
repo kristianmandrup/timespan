@@ -16,9 +16,12 @@ describe Timespan::Span do
   describe 'print in danish - multiple modes' do
     let(:timespan) { Timespan.new :from => from, :to => to }    
 
-    its(:to_s) { should == 'fra 03 May 2012 til 04 May 2012 der varer ialt 1 dag' }
+    let(:today)     { Date.today.strftime('%d %b %Y') }
+    let(:yesterday) { 1.day.ago.strftime('%d %b %Y') }
 
-    specify { subject.to_s(:dates).should == 'fra 03 May 2012 til 04 May 2012' }
+    its(:to_s) { should == "fra #{yesterday} til #{today} der varer ialt 1 dag" }
+
+    specify { subject.to_s(:dates).should == "fra #{yesterday} til #{today}" }
     specify { subject.to_s(:duration).should == '1 dag' }
   end
 end

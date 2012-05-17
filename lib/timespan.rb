@@ -34,12 +34,15 @@ class Timespan
 	def initialize options = {}
 		@is_new = true
 
+		@init_options = options
+		validate! if options == {}
+
 		case options
 		when Numeric, Duration, String
 			options = {:duration => options}
 		end
 		
-		configure options		
+		configure! options
 		
 		@is_new = false
 	end
@@ -89,11 +92,14 @@ class Timespan
 
 	protected
 
+	attr_reader :init_options
+
 	def first_from keys, options = {}
 		keys.select {|key| options[key] }.first
 	end
 
-	def configure options = {}		
+	# uses init_options to configure
+	def configure! options = {}
 		from 	= options[first_from START_KEYS, options]
 		to 		= options[first_from END_KEYS, options]
 		dur 	= options[first_from DURATION_KEYS, options]
@@ -114,12 +120,12 @@ class Timespan
 		self.start_time = Time.now
 	end
 
-	def validate!	
-		raise ArgumentError, "#{valid_requirement}, was: #{current_config}" unless valid?
+	def validate!
+		raise ArgumentError, "#{valid_requirement}, was: #{init_options.inspect} resulting in state: #{current_config}" unless valid?
 	end
 
 	def valid_requirement
-		"Timespan must take a :start and :end time or any of :start and :end time and a :duration"
+		"Timespan must take 1-2 of :start_time, :end_time or :duration or simply a duration as number of seconds or a string"
 	end
 
 	def current_config

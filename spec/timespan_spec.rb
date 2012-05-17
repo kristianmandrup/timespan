@@ -6,6 +6,19 @@ describe Timespan do
   let(:from) { Chronic.parse("1 day ago") }
   let(:to)   { Time.now }
 
+  context 'Invalid params' do
+    describe 'error msg' do
+      specify do
+        expect { Timespan.new }.to raise_error(ArgumentError)
+      end
+
+      specify do
+        expect { Timespan.new(nil) }.to raise_error(ArgumentError)
+      end
+    end
+  end
+
+
   context '2 days duration (from now - default)' do
     let(:timespan) { Timespan.new :duration => "2 days"}
 
