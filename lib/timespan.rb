@@ -37,8 +37,10 @@ class Timespan
 		@init_options = options
 		validate! if options == {}
 
+		options = {:duration => options} if options.kind_of? Numeric
+		
 		case options
-		when Numeric, Duration, String
+		when Duration, String
 			options = {:duration => options}
 		end
 		

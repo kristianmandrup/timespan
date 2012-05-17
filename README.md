@@ -12,6 +12,9 @@ Will calculate time diff between two dates, then allow you to get the time diffe
 	t.to_hours = 10800
 
   t = Timespan.new("2 days") # from today
+  t = Timespan.new(2.days) # from today
+  t = Timespan.new(200) # 200 secs from today
+  t = Timespan.new(duration: 2.days) # specific use of :duration option
 
   t = Timespan.new("3 hrs").from(2.days.from_now)
 

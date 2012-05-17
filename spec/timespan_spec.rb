@@ -18,6 +18,15 @@ describe Timespan do
     end
   end
 
+  context '2 days duration using Integer' do
+    let(:timespan) { Timespan.new 2.days }
+
+    describe '.start_date' do
+      it 'should default to today' do
+        DateTime.parse(subject.start_date.to_s).strftime('%d %b %Y').should == Date.today.strftime('%d %b %Y')
+      end
+    end
+  end
 
   context '2 days duration (from now - default)' do
     let(:timespan) { Timespan.new :duration => "2 days"}
