@@ -5,18 +5,22 @@ class Timespan
 		attr_reader :duration
 
 		def duration= duration
-			@duration = case duration
-			when Timespan
-				duration.duration
-			when Duration
-				duration
-			when Numeric, Hash
-				Duration.new duration
-			when String
-				Duration.new parse_duration(duration)
+			@duration = if duration.kind_of? Numeric
+				 Duration.new duration
 			else
-				raise ArgumentError, "Unsupported duration type: #{duration}"
-			end	
+				case duration
+				when Timespan
+					duration.duration
+				when Duration
+					duration
+				when Hash
+					Duration.new duration
+				when String
+					Duration.new parse_duration(duration)
+				else
+					raise ArgumentError, "Unsupported duration type: #{duration.inspect} of class #{duration.class}"
+				end	
+			end
 			unless is_new?
 				add_dirty :duration
 				refresh!

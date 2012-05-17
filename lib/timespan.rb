@@ -111,6 +111,8 @@ class Timespan
 		default_from_now! unless start_time || end_time
 
 		calculate_miss!
+	rescue ArgumentError => e
+		raise TimeParseError, e.message
 	rescue Exception => e
 		calculate_miss!
 		validate!
