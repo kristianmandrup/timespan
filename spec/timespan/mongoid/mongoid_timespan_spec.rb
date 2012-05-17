@@ -6,6 +6,19 @@ describe Timespan do
   let(:from) { Chronic.parse("1 day ago") }
   let(:to)   { Time.now }
 
+  context '2 days duration using factory method' do
+    let(:account) do 
+      Account.create_it! '2 days'
+    end
+
+    describe '.start_date' do
+      it 'should default to today' do
+        DateTime.parse(subject.period.start_date.to_s).strftime('%d %b %Y').should == Date.today.strftime('%d %b %Y')
+      end
+    end
+  end
+
+
   context '2 days duration (from now - default)' do
     let(:account) do 
       Account.create :period => {:duration => '2 days'}
