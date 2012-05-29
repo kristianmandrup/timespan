@@ -17,7 +17,7 @@ module Mongoid
       # @return [Timespan] deserialized Timespan
       def deserialize(timespan_hash)
         return if !timespan_hash
-        ::Timespan.new(:from => timespan_hash[:from], :to => timespan_hash[:to])
+        ::Timespan.new :from => deserialize_time(timespan_hash[:from]), :to => deserialize_time(timespan_hash[:to])
       end
 
       # Serialize a Timespan or a Hash (with Timespan units) or a Duration in some form to
@@ -33,7 +33,17 @@ module Mongoid
         else
           ::Timespan.new(value)
         end
-        {:from => timespan.start_time, :to => timespan.end_time, :duration => timespan.duration.total}
+        {:from => serialize_time(timespan.start_time), :to => serialize_time(timespan.end_time.to_i), :duration => timespan.duration.total }
+      end
+
+      protected
+
+      def serialize_time time
+        time.to_i
+      end
+
+      def deserialize_time millisecs
+        Time.at millisecs
       end
     end
   end
