@@ -38,6 +38,7 @@ Gem::Specification.new do |s|
     "spec/timespan/duration_macros_spec.rb",
     "spec/timespan/locales/duration_da.yml",
     "spec/timespan/mongoid/account.rb",
+    "spec/timespan/mongoid/mongoid_search_spec.rb",
     "spec/timespan/mongoid/mongoid_timespan_spec.rb",
     "spec/timespan/mongoid/spec_helper.rb",
     "spec/timespan/printer_spec.rb",
