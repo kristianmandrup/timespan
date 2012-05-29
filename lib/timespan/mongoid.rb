@@ -1,12 +1,40 @@
 require "timespan"
 require "mongoid/fields"
 
+# http://whytheluckystiff.net/articles/seeingMetaclassesClearly.html
+class Object 
+  def meta_def name, &blk
+    (class << self; self; end).instance_eval { define_method name, &blk }
+  end
+end
+
+Mongoid::Fields.option :between do |model, field, options|  
+  name = field.name.to_sym
+  model.class_eval do
+    meta_def :"#{name}_between" do |from, to|
+      self.where(:"#{name}.#{TimeSpan.start_field}".gt => from.to_i, :"#{name}.#{TimeSpan.end_field}".lte => to.to_i)
+    end
+  end
+end
+
 # Mongoid serialization support for Timespan type.
 module Mongoid
   module Fields
     class Timespan
       include Mongoid::Fields::Serializable
     
+      class << self
+        attr_writer :start_field, :end_field
+
+        def start_field
+          @start_field || :from
+        end
+
+        def end_field
+          @end_field || :to
+        end
+      end
+
       def self.instantiate(name, options = {})
         super
       end

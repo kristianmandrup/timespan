@@ -1,6 +1,6 @@
 require 'timespan/mongoid/spec_helper'
 
-describe Timespan do
+describe TimeSpan do
 	subject { account }
 
   let(:from) { Chronic.parse("1 day ago") }

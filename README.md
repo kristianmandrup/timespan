@@ -113,6 +113,43 @@ account.period.end_date
 account.period.days
 account.period.duration # => Duration
 
+## Searching periods
+
+```ruby
+Account.where(:'period.from'.lt => 6.days.ago.to_i)
+Account.where(:'period.from'.gt => 3.days.ago.to_i)
+
+# in range
+Account.where(:'period.from'.gt => 3.days.ago.to_i, :'period.to'.lt => Time.now.utc.to_i)
+```
+
+Make it easier by introducing a class helper:
+
+```ruby
+class Account
+  include Mongoid::Document
+  field :period, :type => TimeSpan
+
+  def self.between from, to
+    Account.where(:'period.from'.gt => from.to_i, :'period.to'.lte => to.to_i)
+  end
+end
+```
+
+`Account.between(6.days.ago, 1.day.ago)`
+
+Alternatively auto-generate a `#between` helper for the field:
+
+```ruby
+class Account
+  include Mongoid::Document
+  field :period, :type => TimeSpan, :between => true
+```
+
+`Account.period_between(6.days.ago, 1.day.ago)`
+
+See the `mongoid_search_spec.rb` for examples:
+
 ## Chronic duration
 
 Is used to parse duration strings if Spanner can't be handle it
@@ -160,6 +197,13 @@ class Timespan
     Time.now # or Date.today
   end
 end
+```
+
+By default the `TimeSpan` is stored using `:from` and `:to` for the start and end times. This can be customized as follows: 
+
+```ruby
+TimeSpan.start_field = :start
+TimeSpan.end_field = :end
 ```
 
 ## Contributing to Timespan
