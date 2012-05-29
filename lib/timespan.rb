@@ -120,8 +120,12 @@ class Timespan
 	end		
 
 	def default_from_now!
-		self.start_time = Time.now unless start_time || (end_time && duration)
-		self.end_time = Time.now unless end_time || (start_time && duration)
+		self.start_time = now unless start_time || (end_time && duration)
+		self.end_time = now unless end_time || (start_time && duration)
+	end
+
+	def now
+		Time.now.utc
 	end
 
 	def validate!

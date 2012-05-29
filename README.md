@@ -148,6 +148,20 @@ Currently it also uses Duration, which conflicts with the 'ruby-duration' gem.
   1.week.each(10.hours) {|ten_hour_segment| ...} #=> Using a custom iterator of 10 hours. There would be 17 of them, but notice that the last iteration will only be 8 hours.
 ``
 
+## Configuration and overrides
+
+Timespan by default uses `Time.now.utc` to set the current time, fx used when either `end_date` or `start_date` otherwise would be nil. This is used in order to work with Mongoid (see [issue #400](https://github.com/mongoid/mongoid/issues/400))
+
+You can customize `now` to return fx `Time.now`, `Date.today` or whatever suits you.
+
+```ruby
+class Timespan
+  def now
+    Time.now # or Date.today
+  end
+end
+```
+
 ## Contributing to Timespan
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet.

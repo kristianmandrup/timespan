@@ -22,7 +22,7 @@ class Timespan
   	include Comparable
 
     def time_left time = nil
-      time_compare = time || Time.now
+      time_compare = time || now
       diff = end_time - time_compare
       Timespan::TimeDuration.new(diff)
     end
