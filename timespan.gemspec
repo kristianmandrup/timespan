@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "timespan"
-  s.version = "0.2.7"
+  s.version = "0.2.8"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kristian Mandrup"]
-  s.date = "2012-05-17"
+  s.date = "2012-05-29"
   s.description = "Makes it easy to calculate time distance in different units"
   s.email = "kmandrup@gmail.com"
   s.extra_rdoc_files = [
@@ -43,6 +43,7 @@ Gem::Specification.new do |s|
     "spec/timespan/printer_spec.rb",
     "spec/timespan/span_spec.rb",
     "spec/timespan/units_spec.rb",
+    "spec/timespan_init_spec.rb",
     "spec/timespan_spec.rb",
     "timespan.gemspec"
   ]
