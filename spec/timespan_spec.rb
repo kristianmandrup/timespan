@@ -38,6 +38,7 @@ describe Timespan do
     end
   end
 
+
   context '3 hrs duration from now 2 days from now' do
     let(:timespan) { Timespan.new("3 hrs").from(2.days.from_now) }
 

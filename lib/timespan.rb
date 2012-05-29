@@ -25,8 +25,8 @@ class Timespan
 	alias_method :start_date, :start_time
 	alias_method :end_date, 	:end_time
 
-	START_KEYS 			= [:start, :from]
-	END_KEYS 				= [:to, :end]
+	START_KEYS 			= [:start, :from, :start_date]
+	END_KEYS 				= [:to, :end, :end_date]
 	DURATION_KEYS 	= [:duration, :lasting]
 
 	ALL_KEYS = START_KEYS + END_KEYS + DURATION_KEYS
@@ -102,16 +102,15 @@ class Timespan
 
 	# uses init_options to configure
 	def configure! options = {}
-		from 	= options[first_from START_KEYS, options]
-		to 		= options[first_from END_KEYS, options]
-		dur 	= options[first_from DURATION_KEYS, options]
+		from 	= options[first_from(START_KEYS, options)]
+		to 		= options[first_from(END_KEYS, options)]
+		dur 	= options[first_from(DURATION_KEYS, options)]
 
 		self.duration 		= dur if dur
 		self.start_time 	= from if from
 		self.end_time 		= to if to
 
-		default_from_now! unless start_time || end_time
-
+		default_from_now!
 		calculate_miss!
 	rescue ArgumentError => e
 		raise TimeParseError, e.message
@@ -121,7 +120,8 @@ class Timespan
 	end		
 
 	def default_from_now!
-		self.start_time = Time.now
+		self.start_time = Time.now unless start_time || (end_time && duration)
+		self.end_time = Time.now unless end_time || (start_time && duration)
 	end
 
 	def validate!

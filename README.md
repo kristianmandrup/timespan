@@ -18,6 +18,10 @@ Will calculate time diff between two dates, then allow you to get the time diffe
 
   t = Timespan.new("3 hrs").from(2.days.from_now)
 
+  t = Timespan.new(:from => 2.days.ago)
+
+  t = Timespan.new(:end_date => 4.days.from_now)
+
 	t = Timespan.new(:from => Date.today, :to => "6 weeks from now")	
 
 	t = Timespan.new(:from => Date.today, :duration => "7 weeks 3 days")	
