@@ -27,7 +27,12 @@ module Mongoid
       # @return [Hash] Timespan in seconds
       def serialize(value)
         return if value.blank?
-        timespan = ::Timespan.new(value)
+        timespan = case value
+        when ::Timespan
+          value
+        else
+          ::Timespan.new(value)
+        end
         {:from => timespan.start_time, :to => timespan.end_time, :duration => timespan.duration.total}
       end
     end

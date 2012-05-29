@@ -18,7 +18,19 @@ describe Timespan do
     end
   end
 
-  context '2 days duration using integer' do
+  context '2 days duration using Timespan' do
+    let(:account) do 
+      Account.create :period => Timespan.new(:duration => 2.days)
+    end
+
+    describe '.start_date' do
+      it 'should default to today' do
+        DateTime.parse(subject.period.start_date.to_s).strftime('%d %b %Y').should == Date.today.strftime('%d %b %Y')
+      end
+    end
+  end
+
+  context '2 days duration using :duration => integer via ActiveSupport::Duration' do
     let(:account) do 
       Account.create :period => {:duration => 2.days }
     end
@@ -30,7 +42,7 @@ describe Timespan do
     end
   end
 
-  context '2 days using integer' do
+  context '2 days using integer via ActiveSupport::Duration' do
     let(:account) do 
       Account.create :period => 2.days
     end
@@ -42,7 +54,7 @@ describe Timespan do
     end
   end
 
-  context '2 days duration (from now - default)' do
+  context '2 days duration using string' do
     let(:account) do 
       Account.create :period => {:duration => '2 days'}
     end
