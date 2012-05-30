@@ -21,6 +21,20 @@ class Timespan
   module Compare
   	include Comparable
 
+    def between? cfrom, cto
+      case cfrom
+      when Date, Time, DateTime
+        unless any_kind_of?(cto, Time, Date, DateTime)
+          raise ArgumentError, "Arguments must both be Date or Time, was: #{cfrom}, #{cto}"
+        end
+        (self.start_time.to_i >= cfrom.to_i) && (self.end_time.to_i <= cto.to_i)
+      when ::Duration, String, Integer, ActiveSupport::Duration
+        self >= cfrom && self <= cto
+      else
+        raise ArgumentError, "Not valid arguments for between comparison: #{cfrom}, #{cto}"
+      end
+    end
+
     def time_left time = nil
       time_compare = time || now
       diff = end_time - time_compare
@@ -55,6 +69,12 @@ class Timespan
     def -(other)
       self.duration -= Duration.new(other)
       self
+    end
+
+    protected
+
+    def any_kind_of? obj, *types
+      types.flatten.compact.any?{|type| obj.kind_of? type }
     end
 
 

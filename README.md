@@ -30,6 +30,21 @@ Will calculate time diff between two dates, then allow you to get the time diffe
 
 See specs for more examples of usage
 
+## Comparison
+
+```ruby
+timespan.between?(2.days.ago, 1.minute.from_now)
+timespan.between?(1.days, 3.days)
+timespan < 3.days
+```
+
+## Math
+
+```ruby
+3_days_more = timespan + 3.days
+day_less = timespan -1 3.day
+```
+
 ## Spanner
 
 Internally Timespan uses Spanner to parse duration strings.

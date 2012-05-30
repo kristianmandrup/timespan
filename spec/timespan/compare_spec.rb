@@ -3,29 +3,71 @@ require 'spec_helper'
 describe "Timespan" do
 	subject { timespan }
 
-  context 'From and To with 1 day apart' do
+  context 'From and To with 2 day apart' do
   	let(:timespan) { Timespan.new :from => from, :to => to}
 
-  	let(:from) { Chronic.parse("1 day ago") }
+  	let(:from) { 2.days.ago }
   	let(:to)   { Time.now }
 
-    describe '.compare == ' do  
-    	specify do 
-    		(subject == 1.day).should be_true
-    	end  
-    end
+    describe 'Compare' do
+      describe '==' do  
+      	specify do 
+      		(subject == 2.days).should be_true
+      	end  
+      end
 
-    describe '.compare < ' do    
-    	specify do 
-    		(subject < 1.day).should be_false
-    	end
-    end    
+      describe '<' do    
+      	specify do 
+      		(subject < 2.day).should be_false
+      	end
 
-    describe '.compare > ' do    
-    	specify do 
-    		(subject > 1.day).should be_false
-    	end
-    end    
+        specify do 
+          (subject < 3.days).should be_true
+        end
+      end    
+
+      describe '>' do    
+      	specify do 
+      		(subject > 2.day).should be_false
+      	end
+
+        specify do 
+          (subject > 1.day).should be_true
+        end
+      end
+
+      describe '>=' do    
+        specify do 
+          (subject >= 2.days).should be_true
+        end
+      end
+
+      describe '<=' do    
+        specify do 
+          (subject <= 2.days).should be_true
+        end
+      end
+
+      describe 'between? dates' do    
+        specify do 
+          subject.between?(2.days.ago, 1.minute.from_now).should be_true
+        end
+
+        specify do 
+          subject.between?(Time.now, 1.day.from_now).should be_false
+        end
+      end
+
+      describe 'between? durations' do    
+        specify do 
+          subject.between?(1.days, 3.days).should be_true
+        end
+
+        specify do 
+          subject.between?(3.days, 4.days).should be_false
+        end
+      end
+    end     
   end
 
   context 'From 2 days ago until today' do
