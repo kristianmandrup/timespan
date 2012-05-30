@@ -12,7 +12,7 @@ Mongoid::Fields.option :between do |model, field, options|
   name = field.name.to_sym
   model.class_eval do
     meta_def :"#{name}_between" do |from, to|
-      self.where(:"#{name}.#{TimeSpan.start_field}".gt => from.to_i, :"#{name}.#{TimeSpan.end_field}".lte => to.to_i)
+      self.where(:"#{name}.#{TimeSpan.start_field}".gte => from.to_i, :"#{name}.#{TimeSpan.end_field}".lte => to.to_i)
     end
   end
 end
@@ -43,9 +43,9 @@ module Mongoid
       #
       # @param [Hash] Timespan as hash
       # @return [Timespan] deserialized Timespan
-      def deserialize(timespan_hash)
-        return if !timespan_hash
-        ::Timespan.new :from => deserialize_time(timespan_hash[:from]), :to => deserialize_time(timespan_hash[:to])
+      def deserialize(hash)
+        return if !hash
+        ::Timespan.new :from => from(hash), :to => to(hash)
       end
 
       # Serialize a Timespan or a Hash (with Timespan units) or a Duration in some form to
@@ -65,6 +65,18 @@ module Mongoid
       end
 
       protected
+
+      def from hash
+        from_value = hash['from'] || hash[:from]
+        raise ArgumentError, ":from is nil, #{hash.inspect}" if from_value.nil?
+        deserialize_time from_value
+      end
+
+      def to hash
+        to_value = hash['to'] || hash[:to]
+        raise ArgumentError, ":to is nil, #{hash.inspect}" if to_value.nil?
+        deserialize_time to_value
+      end
 
       def serialize_time time
         time.to_i
