@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "timespan"
-  s.version = "0.3.2"
+  s.version = "0.4.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kristian Mandrup"]
-  s.date = "2012-05-30"
+  s.date = "2012-06-05"
   s.description = "Makes it easy to calculate time distance in different units"
   s.email = "kmandrup@gmail.com"
   s.extra_rdoc_files = [
@@ -29,6 +29,8 @@ Gem::Specification.new do |s|
     "lib/timespan.rb",
     "lib/timespan/compare.rb",
     "lib/timespan/mongoid.rb",
+    "lib/timespan/mongoid/mongoid_2x.rb",
+    "lib/timespan/mongoid/mongoid_3x.rb",
     "lib/timespan/printer.rb",
     "lib/timespan/rails/engine.rb",
     "lib/timespan/span.rb",
@@ -37,10 +39,14 @@ Gem::Specification.new do |s|
     "spec/timespan/compare_spec.rb",
     "spec/timespan/duration_macros_spec.rb",
     "spec/timespan/locales/duration_da.yml",
-    "spec/timespan/mongoid/account.rb",
+    "spec/timespan/mongoid/models/account_2x.rb",
+    "spec/timespan/mongoid/models/account_3x.rb",
     "spec/timespan/mongoid/mongoid_search_spec.rb",
+    "spec/timespan/mongoid/mongoid_setup.rb",
     "spec/timespan/mongoid/mongoid_timespan_spec.rb",
     "spec/timespan/mongoid/spec_helper.rb",
+    "spec/timespan/mongoid/support/mongod.conf",
+    "spec/timespan/mongoid/support/mongoid.yml",
     "spec/timespan/printer_spec.rb",
     "spec/timespan/span_spec.rb",
     "spec/timespan/units_spec.rb",
@@ -64,8 +70,7 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<xduration>, ["~> 2.2"])
       s.add_development_dependency(%q<rspec>, [">= 2.8.0"])
       s.add_development_dependency(%q<rails>, ["~> 3.2"])
-      s.add_development_dependency(%q<mongoid>, ["~> 2.4"])
-      s.add_development_dependency(%q<bson>, ["~> 1.6"])
+      s.add_development_dependency(%q<mongoid>, [">= 2.4"])
       s.add_development_dependency(%q<rdoc>, [">= 3.12"])
       s.add_development_dependency(%q<bundler>, [">= 1.0.0"])
       s.add_development_dependency(%q<jeweler>, [">= 1.8.3"])
@@ -77,8 +82,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<xduration>, ["~> 2.2"])
       s.add_dependency(%q<rspec>, [">= 2.8.0"])
       s.add_dependency(%q<rails>, ["~> 3.2"])
-      s.add_dependency(%q<mongoid>, ["~> 2.4"])
-      s.add_dependency(%q<bson>, ["~> 1.6"])
+      s.add_dependency(%q<mongoid>, [">= 2.4"])
       s.add_dependency(%q<rdoc>, [">= 3.12"])
       s.add_dependency(%q<bundler>, [">= 1.0.0"])
       s.add_dependency(%q<jeweler>, [">= 1.8.3"])
@@ -91,8 +95,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<xduration>, ["~> 2.2"])
     s.add_dependency(%q<rspec>, [">= 2.8.0"])
     s.add_dependency(%q<rails>, ["~> 3.2"])
-    s.add_dependency(%q<mongoid>, ["~> 2.4"])
-    s.add_dependency(%q<bson>, ["~> 1.6"])
+    s.add_dependency(%q<mongoid>, [">= 2.4"])
     s.add_dependency(%q<rdoc>, [">= 3.12"])
     s.add_dependency(%q<bundler>, [">= 1.0.0"])
     s.add_dependency(%q<jeweler>, [">= 1.8.3"])
