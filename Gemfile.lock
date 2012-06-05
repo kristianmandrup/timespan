@@ -116,7 +116,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bson (>= 1.6)
   bundler (>= 1.0.0)
   chronic
   chronic_duration
