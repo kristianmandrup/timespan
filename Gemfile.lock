@@ -1,3 +1,13 @@
+GIT
+  remote: git://github.com/mongoid/mongoid.git
+  revision: 807373f28561cb78263c78960db43cba69e8ab8c
+  specs:
+    mongoid (3.0.0.rc)
+      activemodel (~> 3.1)
+      moped (~> 1.0.0.rc)
+      origin (~> 1.0.0)
+      tzinfo (~> 0.3.22)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -29,7 +39,6 @@ GEM
       i18n (~> 0.6)
       multi_json (~> 1.0)
     arel (3.0.2)
-    bson (1.6.2)
     builder (3.0.0)
     chronic (0.6.7)
     chronic_duration (0.9.6)
@@ -51,14 +60,10 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.18)
-    mongo (1.6.2)
-      bson (~> 1.6.2)
-    mongoid (2.4.9)
-      activemodel (~> 3.1)
-      mongo (~> 1.3)
-      tzinfo (~> 0.3.22)
-    multi_json (1.3.4)
+    moped (1.0.0.rc)
+    multi_json (1.3.6)
     numerizer (0.1.1)
+    origin (1.0.0)
     polyglot (0.3.3)
     rack (1.4.1)
     rack-cache (1.2)
@@ -116,12 +121,11 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bson (~> 1.6)
   bundler (>= 1.0.0)
   chronic
   chronic_duration
   jeweler (>= 1.8.3)
-  mongoid (~> 2.4)
+  mongoid (~> 3.0.0.rc)!
   rails (~> 3.2)
   rdoc (>= 3.12)
   rspec (>= 2.8.0)

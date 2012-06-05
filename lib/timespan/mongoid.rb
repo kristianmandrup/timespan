@@ -23,32 +23,39 @@ module Mongoid
         end
       end
 
-      protected
+      # protected
 
-      def from hash
-        from_value = hash['from'] || hash[:from]
-        raise ArgumentError, ":from is nil, #{hash.inspect}" if from_value.nil?
-        deserialize_time from_value
+      module Methods
+        def from hash
+          from_value = hash['from'] || hash[:from]
+          raise ArgumentError, ":from is nil, #{hash.inspect}" if from_value.nil?
+          deserialize_time from_value
+        end
+
+        def to hash
+          to_value = hash['to'] || hash[:to]
+          raise ArgumentError, ":to is nil, #{hash.inspect}" if to_value.nil?
+          deserialize_time to_value
+        end
+
+        def serialize_time time
+          raise ArgumentError, "Can't serialize time from nil" if time.nil?
+          time.to_i
+        end
+
+        def deserialize_time millisecs
+          raise ArgumentError, "Can't deserialize time from nil" if millisecs.nil?
+          Time.at millisecs
+        end      
       end
 
-      def to hash
-        to_value = hash['to'] || hash[:to]
-        raise ArgumentError, ":to is nil, #{hash.inspect}" if to_value.nil?
-        deserialize_time to_value
-      end
-
-      def serialize_time time
-        time.to_i
-      end
-
-      def deserialize_time millisecs
-        Time.at millisecs
-      end      
+      include Methods
+      extend Methods
     end
   end
 end
 
-if defined?(Mongoid::Fields) && Mongoid::Fields.respond_to? :option
+if defined?(Mongoid::Fields) && Mongoid::Fields.respond_to?(:option)
   Mongoid::Fields.option :between do |model, field, options|  
     name = field.name.to_sym
     model.class_eval do
@@ -59,7 +66,10 @@ if defined?(Mongoid::Fields) && Mongoid::Fields.respond_to? :option
   end
 end
 
-mongoid_version = Mongoid::VERSION > '3' ? 3 : 2
-require "timespan/mongoid/mongoid_#{mongoid_version}x"
+module Mongoid
+  MAJOR_VERSION =  Mongoid::VERSION > '3' ? 3 : 2
+end
+
+require "timespan/mongoid/mongoid_#{Mongoid::MAJOR_VERSION}x"
 
 TimeSpan = Mongoid::Fields::Timespan

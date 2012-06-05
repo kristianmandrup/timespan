@@ -1,11 +1,11 @@
 class Account
-	include Mongoid::Document  
-	field :period, :type => TimeSpan, :between => true
+  include Mongoid::Document
+
+  field :period, :type => ::Timespan, :between => true
 
   def self.create_it! duration
-    s = self.new
-    s.period = {duration: duration}
-    s
+    t = ::Timespan.new(duration: duration)
+    self.new period: t
   end
 
   def self.between from, to

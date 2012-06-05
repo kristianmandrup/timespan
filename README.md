@@ -107,6 +107,8 @@ da:
 
 ## Timespan for Mongoid
 
+Tested and works with Mongoid 2.4 and 3.0.0.rc
+
 Custom Timespan datatype
 
 ```ruby

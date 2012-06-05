@@ -30,50 +30,14 @@ describe TimeSpan do
     end
   end
 
-  context '2 days duration using :duration => integer via ActiveSupport::Duration' do
-    let(:account) do 
-      Account.create :period => {:duration => 2.days }
-    end
-
-    describe '.start_date' do
-      it 'should default to today' do
-        DateTime.parse(subject.period.start_date.to_s).strftime('%d %b %Y').should == Date.today.strftime('%d %b %Y')
-      end
-    end
-  end
-
   context '2 days using integer via ActiveSupport::Duration' do
     let(:account) do 
-      Account.create :period => 2.days
+      Account.create :period => Timespan.new(2.days)
     end
 
     describe '.start_date' do
       it 'should default to today' do
         DateTime.parse(subject.period.start_date.to_s).strftime('%d %b %Y').should == Date.today.strftime('%d %b %Y')
-      end
-    end
-  end
-
-  context '2 days duration using string' do
-    let(:account) do 
-      Account.create :period => {:duration => '2 days'}
-    end
-
-    describe '.start_date' do
-      it 'should default to today' do
-        DateTime.parse(subject.period.start_date.to_s).strftime('%d %b %Y').should == Date.today.strftime('%d %b %Y')
-      end
-    end
-  end
-
-  context '2 days duration (from 1 day ago)' do
-    let(:account) do 
-      Account.create :period => {:duration => '2 days', :from => from }
-    end
-
-    describe '.start_date' do
-      it 'should default to today' do
-        DateTime.parse(subject.period.start_date.to_s).strftime('%d %b %Y').should == 1.day.ago.strftime('%d %b %Y') 
       end
     end
   end
