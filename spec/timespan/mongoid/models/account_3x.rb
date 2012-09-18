@@ -3,6 +3,12 @@ class Account
 
   field :period, :type => ::Timespan, :between => true
 
+  delegate :start_date, to: :period
+
+  def start_date= date
+    self.period = ::Timespan.new(start_date: date, end_date: self.period.end_date)
+  end
+
   def self.create_it! duration
     t = ::Timespan.new(duration: duration)
     self.new period: t

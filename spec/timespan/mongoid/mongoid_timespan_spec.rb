@@ -3,6 +3,10 @@ require 'timespan/mongoid/spec_helper'
 describe TimeSpan do
 	subject { account }
 
+  def tomorrow
+    Date.today + 1.day
+  end
+
   let(:from) { Chronic.parse("1 day ago") }
   let(:to)   { Time.now }
 
@@ -38,6 +42,16 @@ describe TimeSpan do
     describe '.start_date' do
       it 'should default to today' do
         DateTime.parse(subject.period.start_date.to_s).strftime('%d %b %Y').should == Date.today.strftime('%d %b %Y')
+      end
+    end
+
+    describe 'set new start_date' do
+      before :each do
+        subject.start_date = tomorrow
+      end
+
+      specify do
+        Date.parse(subject.start_date.to_s).should == tomorrow
       end
     end
   end
