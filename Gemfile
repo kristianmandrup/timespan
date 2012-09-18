@@ -7,11 +7,11 @@ gem 'xduration', '~> 2.2'
 
 group :test, :development do
   gem "rspec", 		">= 2.8.0"
-  gem 'rails', 		'~> 3.2'
-  gem 'mongoid',  '>= 2.4'
+  gem 'rails', 		'~> 3.2.7'
+  # gem 'mongoid',  '>= 2.4'
   # gem 'bson',     '>= 1.6'
 
-  # gem 'mongoid',  '~> 3.0.0.rc', :git => 'git://github.com/mongoid/mongoid.git'  
+  gem 'mongoid',  '~> 3.0.0' #, :git => 'git://github.com/mongoid/mongoid.git'  
   # gem 'i18n'
 end
 

@@ -8,6 +8,10 @@ require 'timespan/compare'
 require 'timespan/printer'
 require 'timespan/span'
 
+if defined?(Mongoid)
+	require 'timespan/mongoid'
+end
+
 if defined?(Rails) && Rails::VERSION::STRING >= '3.1'
 	require 'duration/rails/engine' 
 end
