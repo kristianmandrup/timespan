@@ -7,8 +7,7 @@ class Account
   timespan_methods :period
 
   def self.create_it! duration
-    t = ::Timespan.new(duration: duration)
-    self.new period: t
+    self.new period: ::Timespan.new(duration: duration)
   end
 
   def self.between from, to
