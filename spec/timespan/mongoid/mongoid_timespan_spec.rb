@@ -48,10 +48,15 @@ describe TimeSpan do
     describe 'set new start_date' do
       before :each do
         subject.period_start = tomorrow
+        subject.period_end = tomorrow + 5.days
       end
 
       specify do
         subject.start_date.should == subject.period.start_date
+      end
+
+      specify do
+        subject.end_date.should == subject.period.end_date
       end
 
       specify do
