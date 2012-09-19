@@ -1,5 +1,6 @@
 require "timespan"
 require "mongoid/fields"
+require "timespan/mongoid/timespanned"
 
 # http://whytheluckystiff.net/articles/seeingMetaclassesClearly.html
 class Object 

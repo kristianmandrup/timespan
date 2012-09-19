@@ -1,13 +1,12 @@
 class Account
   include Mongoid::Document
+  include Mongoid::Timespanned
 
   field :period, :type => ::Timespan, :between => true
 
   delegate :start_date, to: :period
 
-  def start_date= date
-    self.period = ::Timespan.new(start_date: date, end_date: self.period.end_date)
-  end
+  timespan_setters :period
 
   def self.create_it! duration
     t = ::Timespan.new(duration: duration)

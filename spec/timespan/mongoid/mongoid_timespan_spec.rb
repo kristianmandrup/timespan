@@ -47,7 +47,7 @@ describe TimeSpan do
 
     describe 'set new start_date' do
       before :each do
-        subject.start_date = tomorrow
+        subject.period_start = tomorrow
       end
 
       specify do
