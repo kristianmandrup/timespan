@@ -51,6 +51,10 @@ describe TimeSpan do
       end
 
       specify do
+        subject.start_date.should == subject.period.start_date
+      end
+
+      specify do
         Date.parse(subject.start_date.to_s).should == tomorrow
       end
     end

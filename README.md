@@ -116,9 +116,19 @@ require 'timespan/mongoid'
 
 class Account
   include Mongoid::Document
+  include Mongoid::Timespanned
+
   field :period, :type => TimeSpan
+
+  timespan_methods :period
 end
 ```
+
+`Mongoid::Timespanned` adds the following class level macros:
+
+* `timespan_methods name`
+* `timespan_delegates name`
+* `timespan_setters name`
 
 Usage example:
 
@@ -129,6 +139,13 @@ account.period.start_date
 account.period.end_date
 account.period.days
 account.period.duration # => Duration
+
+account.period_start = tomorrow
+account.period_end = 5.days.from_now
+
+account.start_date == tomorrow
+account.end_date == tomorrow
+```
 
 ## Searching periods
 

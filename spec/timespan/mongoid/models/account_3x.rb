@@ -4,9 +4,7 @@ class Account
 
   field :period, :type => ::Timespan, :between => true
 
-  delegate :start_date, to: :period
-
-  timespan_setters :period
+  timespan_methods :period
 
   def self.create_it! duration
     t = ::Timespan.new(duration: duration)

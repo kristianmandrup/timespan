@@ -3,6 +3,15 @@ module Mongoid
     extend ActiveSupport::Concern
 
     module ClassMethods
+      def timespan_methods name
+        timespan_delegates name
+        timespan_setters name
+      end
+
+      def timespan_delegates name = :period  
+        delegate :time_left, :duration, :start_date, :end_date, to: name
+      end
+
       def timespan_setters name = :period  
         define_method :"#{name}_start=" do |date|
           self.send "#{name}=", ::Timespan.new(start_date: date, end_date: self.send(name).end_date)
