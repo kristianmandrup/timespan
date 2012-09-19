@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "timespan"
-  s.version = "0.4.1"
+  s.version = "0.4.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kristian Mandrup"]
-  s.date = "2012-09-18"
+  s.date = "2012-09-19"
   s.description = "Makes it easy to calculate time distance in different units"
   s.email = "kmandrup@gmail.com"
   s.extra_rdoc_files = [
@@ -31,6 +31,7 @@ Gem::Specification.new do |s|
     "lib/timespan/mongoid.rb",
     "lib/timespan/mongoid/mongoid_2x.rb",
     "lib/timespan/mongoid/mongoid_3x.rb",
+    "lib/timespan/mongoid/timespanned.rb",
     "lib/timespan/printer.rb",
     "lib/timespan/rails/engine.rb",
     "lib/timespan/span.rb",
