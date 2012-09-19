@@ -9,7 +9,7 @@ class Account
   timespan_methods :period
 
   embeds_one :time_period
-  timespan_container_delegates :time_period, :dates, :all#:start, :end
+  timespan_container_delegates :time_period, :dates, :all #:start, :end
 
   def self.create_it! duration
     acc = self.new period: ::Timespan.new(duration: duration), time_period: ::TimePeriod.new

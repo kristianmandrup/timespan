@@ -113,13 +113,16 @@ Custom Timespan datatype:
 
 `Mongoid::Timespanned` adds the following class level macros:
 
-* `timespan_methods name`
-* `timespan_delegates name`
-* `timespan_setters name`
+* `timespan_methods target, *names`
+* `timespan_delegates target, *names`
+* `timespan_delegate name, target = :period`
+* `timespan_setters target, *names`
+* `timespan_setter target, name`
 
 * `timespan_container_delegates container, timespan_field, *names`
 * `timespan_container_delegate container, timespan_field, name`
 
+Note that all the macros, take an `options` Hash as the last argument, where you can set `override: true` in order to override any existing methods. Otherwise an `ArgumentError` exception will be raised, to warn you of a method name conflict!
 
 ```ruby
 require 'timespan/mongoid'
@@ -147,6 +150,8 @@ class TimePeriod
   timespan_methods :dates
 end
 ```
+
+Note: See `mongoid_timespan_spec.rb` for more examples of usage, and also see the `ClassMethods` module in `timespanned.rb` :)
 
 Usage example:
 

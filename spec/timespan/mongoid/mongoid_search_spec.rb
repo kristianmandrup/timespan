@@ -9,8 +9,6 @@ describe TimeSpan do
       @acc1 = Account.create :period => Timespan.new(:start_date => 2.days.ago)
       @acc2 = Account.create :period => Timespan.new(:start_date => 5.days.ago, :end_date => 2.days.ago)
       @acc3 = Account.create :period => Timespan.new(:start_date => 10.days.ago)
-
-      # puts [@acc1._id, @acc2._id, @acc3._id]
     end
 
     describe 'find accounts within specific period' do
