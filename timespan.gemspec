@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "timespan"
-  s.version = "0.4.3"
+  s.version = "0.4.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kristian Mandrup"]
@@ -42,6 +42,7 @@ Gem::Specification.new do |s|
     "spec/timespan/locales/duration_da.yml",
     "spec/timespan/mongoid/models/account_2x.rb",
     "spec/timespan/mongoid/models/account_3x.rb",
+    "spec/timespan/mongoid/models/time_period.rb",
     "spec/timespan/mongoid/mongoid_search_spec.rb",
     "spec/timespan/mongoid/mongoid_setup.rb",
     "spec/timespan/mongoid/mongoid_timespan_spec.rb",
