@@ -52,6 +52,10 @@ describe TimeSpan do
       end
 
       specify do
+        subject.period.should be_a Timespan
+      end
+
+      specify do
         subject.start_date.should == subject.period.start_date
       end
 

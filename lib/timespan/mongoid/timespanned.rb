@@ -8,7 +8,7 @@ module Mongoid
         timespan_setters name
       end
 
-      def timespan_delegates name = :period  
+      def timespan_delegates name = :period
         delegate :time_left, :duration, :start_date, :end_date, to: name
       end
 
