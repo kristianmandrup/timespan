@@ -107,9 +107,19 @@ da:
 
 ## Timespan for Mongoid
 
-Tested and works with Mongoid 2.4 and 3.0.0.rc
+Tested and works with Mongoid 2.4 and 3.0+
 
-Custom Timespan datatype
+Custom Timespan datatype:
+
+`Mongoid::Timespanned` adds the following class level macros:
+
+* `timespan_methods name`
+* `timespan_delegates name`
+* `timespan_setters name`
+
+* `timespan_container_delegates container, timespan_field, *names`
+* `timespan_container_delegate container, timespan_field, name`
+
 
 ```ruby
 require 'timespan/mongoid'
@@ -118,17 +128,25 @@ class Account
   include Mongoid::Document
   include Mongoid::Timespanned
 
-  field :period, :type => TimeSpan
+  field :period, :type => Timespan
 
   timespan_methods :period
+
+  embeds_one :time_period
+  timespan_container_delegates :time_period, :dates, :start, :end  
+end
+
+class TimePeriod
+  include Mongoid::Document
+  include Mongoid::Timespanned
+
+  field :dates, :type => ::Timespan, :between => true
+
+  embedded_in :account
+
+  timespan_methods :dates
 end
 ```
-
-`Mongoid::Timespanned` adds the following class level macros:
-
-* `timespan_methods name`
-* `timespan_delegates name`
-* `timespan_setters name`
 
 Usage example:
 
@@ -140,11 +158,17 @@ account.period.end_date
 account.period.days
 account.period.duration # => Duration
 
+# using timespan setters defined by timespan_methods
 account.period_start = tomorrow
 account.period_end = 5.days.from_now
 
+# using timespan delegates defined by timespan_methods
 account.start_date == tomorrow
 account.end_date == tomorrow
+
+# using timespan_container_delegates on time_period
+account.start_date = tomorrow
+account.end_date = tomorrow + 5.days
 ```
 
 ## Searching periods
@@ -162,7 +186,7 @@ Make it easier by introducing a class helper:
 ```ruby
 class Account
   include Mongoid::Document
-  field :period, :type => TimeSpan
+  field :period, :type => Timespan
 
   def self.between from, to
     Account.where(:'period.from'.gt => from.to_i, :'period.to'.lte => to.to_i)

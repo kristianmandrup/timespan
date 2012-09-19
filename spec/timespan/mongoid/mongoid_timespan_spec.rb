@@ -44,11 +44,23 @@ describe TimeSpan do
         DateTime.parse(subject.period.start_date.to_s).strftime('%d %b %Y').should == Date.today.strftime('%d %b %Y')
       end
     end
+  end
+
+  context 'Setters and delegates' do
+    let(:account) do 
+      Account.create_it! 2.days
+    end
 
     describe 'set new start_date' do
       before :each do
         subject.period_start = tomorrow
         subject.period_end = tomorrow + 5.days
+
+        subject.end_date = tomorrow + 3.days
+      end
+
+      specify do
+        Date.parse(subject.time_period.end_date.to_s).should == tomorrow + 3.days
       end
 
       specify do
