@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "timespan"
-  s.version = "0.4.5"
+  s.version = "0.4.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kristian Mandrup"]
-  s.date = "2012-09-19"
+  s.date = "2012-09-24"
   s.description = "Makes it easy to calculate time distance in different units"
   s.email = "kmandrup@gmail.com"
   s.extra_rdoc_files = [
@@ -68,6 +68,7 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<chronic>, [">= 0"])
       s.add_runtime_dependency(%q<chronic_duration>, [">= 0"])
+      s.add_runtime_dependency(%q<activesupport>, [">= 3.0.0"])
       s.add_runtime_dependency(%q<spanner>, [">= 0"])
       s.add_runtime_dependency(%q<xduration>, ["~> 2.2"])
       s.add_development_dependency(%q<rspec>, [">= 2.8.0"])
@@ -80,6 +81,7 @@ Gem::Specification.new do |s|
     else
       s.add_dependency(%q<chronic>, [">= 0"])
       s.add_dependency(%q<chronic_duration>, [">= 0"])
+      s.add_dependency(%q<activesupport>, [">= 3.0.0"])
       s.add_dependency(%q<spanner>, [">= 0"])
       s.add_dependency(%q<xduration>, ["~> 2.2"])
       s.add_dependency(%q<rspec>, [">= 2.8.0"])
@@ -93,6 +95,7 @@ Gem::Specification.new do |s|
   else
     s.add_dependency(%q<chronic>, [">= 0"])
     s.add_dependency(%q<chronic_duration>, [">= 0"])
+    s.add_dependency(%q<activesupport>, [">= 3.0.0"])
     s.add_dependency(%q<spanner>, [">= 0"])
     s.add_dependency(%q<xduration>, ["~> 2.2"])
     s.add_dependency(%q<rspec>, [">= 2.8.0"])
