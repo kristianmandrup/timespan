@@ -12,9 +12,11 @@ group :test, :development do
   # gem 'mongoid',  '>= 2.4'
   # gem 'bson',     '>= 1.6'
 
-  gem 'mongoid',  '~> 3.0.0' #, :git => 'git://github.com/mongoid/mongoid.git'  
+  gem 'mongoid',  '~> 3.0'
+  gem 'origin-selectable_ext'
   # gem 'i18n'
 end
+
 
 group :development do
   gem "rdoc", 		">= 3.12"

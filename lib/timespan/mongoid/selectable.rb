@@ -33,6 +33,26 @@ module Origin
       end
     end
 
+    def between(criterion = nil)
+      selection(criterion) do |selector, field, value|
+        expr = custom_between?(field, value) ? custom_between(field, value) : { "$gte" => value.min, "$lte" => value.max }
+        selector.store(
+          field, expr
+        )
+      end
+    end    
+
+    def custom_between? name, value
+      serializer = @serializers[name.to_s]
+      serializer && serializer.type.respond_to?(:custom_between?) && serializer.type.custom_between?(name, value)
+    end    
+
+    def custom_between(name, value)
+      serializer = @serializers[name.to_s]
+      raise RuntimeError, "No Serializer found for field #{name}" unless serializer
+      serializer.type.custom_between(name, value, serializer.options)
+    end    
+
     def custom_serialization?(name, operator)
       serializer = @serializers[name.to_s]
       serializer && serializer.type.respond_to?(:custom_serialization?) && serializer.type.custom_serialization?(operator)

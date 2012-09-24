@@ -3,6 +3,9 @@ require 'chronic'
 require 'chronic_duration'
 require 'spanner'
 
+# Range intersection that works with dates!
+require 'timespan/core_ext/range'
+
 require 'timespan/units'
 require 'timespan/compare'
 require 'timespan/printer'

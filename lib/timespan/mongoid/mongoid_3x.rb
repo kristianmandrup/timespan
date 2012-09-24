@@ -1,4 +1,4 @@
-require 'timespan/mongoid/selectable'
+require 'origin-selectable_ext'
 require 'timespan/core_ext/hash'
 
 class Timespan
