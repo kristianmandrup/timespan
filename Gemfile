@@ -2,6 +2,7 @@ source :rubygems
 
 gem 'chronic'
 gem 'chronic_duration'
+gem 'activesupport', '>= 3.0.0'
 gem 'spanner'
 gem 'xduration', '~> 2.2'
 

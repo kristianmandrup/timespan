@@ -7,6 +7,7 @@ require 'timespan/units'
 require 'timespan/compare'
 require 'timespan/printer'
 require 'timespan/span'
+require 'active_support/core_ext/date/calculations.rb'
 
 if defined?(Mongoid)
 	require 'timespan/mongoid'
@@ -14,6 +15,12 @@ end
 
 if defined?(Rails) && Rails::VERSION::STRING >= '3.1'
 	require 'duration/rails/engine' 
+end
+
+class Date
+	def self.next_week
+		Date.today.next_week
+	end
 end
 
 class Timespan
@@ -51,6 +58,43 @@ class Timespan
 		configure! options
 		
 		@is_new = false
+	end
+
+	def self.from start, duration, options = {}
+		start = case start.to_sym
+		when :now, :asap
+			Time.now
+		when :today
+			Date.today
+		when :tomorrow
+			Date.today + 1.day
+		when :next_week # requires active_support
+			date = Date.today.next_week
+			options[:start] ? date.beginning_of_week : date
+		when :next_month			
+			date = Date.today.next_month
+			options[:start] ? date.at_beginning_of_month.next_month : date
+		else
+			start
+		end
+
+		self.new start_date: start, duration: duration
+	end
+
+	def self.untill ending
+		ending = case ending.to_sym
+		when :tomorrow
+			Date.today + 1.day
+		when :next_week # requires active_support
+			date = Date.today.next_week
+			options[:start] ? date.beginning_of_week : date
+		when :next_month			
+			date = Date.today.next_month
+			options[:start] ? date.at_beginning_of_month.next_month : date
+		else
+			ending
+		end
+		self.new start_date: Date.now, end_date: ending
 	end
 
 	def start_time= time
@@ -188,7 +232,7 @@ class Timespan
 	end
 
 	def set_end_time
-		self.end_time = start_time - duration.total
+		self.end_time = start_time + duration.total
 	end
 
 	def set_start_time_miss

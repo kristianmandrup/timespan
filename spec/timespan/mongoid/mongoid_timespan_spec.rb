@@ -10,6 +10,104 @@ describe TimeSpan do
   let(:from) { Chronic.parse("1 day ago") }
   let(:to)   { Time.now }
 
+  context 'factory method #from' do
+    describe ':today' do
+      let(:account) do 
+        Account.create period: Timespan.from(:today, 5.days)
+      end
+
+      describe '.start_date' do
+        it 'should default to today' do
+          DateTime.parse(subject.period.start_date.to_s).strftime('%d %b %Y').should == Date.today.strftime('%d %b %Y')
+        end
+      end
+
+      describe '.duration' do
+        it 'should be 5 days' do
+          subject.period.to_days.should == 5
+        end
+      end
+
+      describe '.end_date' do
+        it 'should be 5 days from today' do
+          DateTime.parse(subject.period.end_date.to_s).strftime('%d %b %Y').should == (Date.today + 5.days).strftime('%d %b %Y')
+        end
+      end
+    end
+
+    describe ':asap' do
+      let(:account) do 
+        Account.create period: Timespan.from(:asap, 5.days)
+      end
+
+      describe '.start_date' do
+        it 'should default to today' do
+          DateTime.parse(subject.period.start_date.to_s).strftime('%d %b %Y').should == Date.today.strftime('%d %b %Y')
+        end
+      end
+
+      describe '.duration' do
+        it 'should be 5 days' do
+          subject.period.to_days.should == 5
+        end
+      end
+
+      describe '.end_date' do
+        it 'should be 5 days from today' do
+          DateTime.parse(subject.period.end_date.to_s).strftime('%d %b %Y').should == (Date.today + 5.days).strftime('%d %b %Y')
+        end
+      end
+    end
+
+    describe ':tomorrow' do
+      let(:account) do 
+        Account.create period: Timespan.from(:tomorrow, 5.days)
+      end
+
+      describe '.start_date' do
+        it 'should be tomorrow' do
+          DateTime.parse(subject.period.start_date.to_s).strftime('%d %b %Y').should == Date.tomorrow.strftime('%d %b %Y')
+        end
+      end
+
+      describe '.duration' do
+        it 'should be 5 days' do
+          subject.period.to_days.should == 5
+        end
+      end
+
+      describe '.end_date' do
+        it 'should be 5 days from tomorrow' do
+          DateTime.parse(subject.period.end_date.to_s).strftime('%d %b %Y').should == (Date.tomorrow + 5.days).strftime('%d %b %Y')
+        end
+      end
+    end
+
+    describe ':next_week' do
+      let(:account) do 
+        Account.create period: Timespan.from(:next_week, 5.days)
+      end
+
+      describe '.start_date' do
+        it 'should be 1 week from today' do
+          DateTime.parse(subject.period.start_date.to_s).strftime('%d %b %Y').should == Date.next_week.strftime('%d %b %Y')
+        end
+      end
+
+      describe '.duration' do
+        it 'should be 5 days' do
+          subject.period.to_days.should == 5
+        end
+      end
+
+      describe '.end_date' do
+        it 'should be 5 days from next week' do
+          DateTime.parse(subject.period.end_date.to_s).strftime('%d %b %Y').should == (Date.next_week + 5.days).strftime('%d %b %Y')
+        end
+      end
+    end
+  end
+
   context '2 days duration using factory method' do
     let(:account) do 
       Account.create_it! '2 days'

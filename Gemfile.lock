@@ -116,6 +116,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activesupport (>= 3.0.0)
   bundler (>= 1.0.0)
   chronic
   chronic_duration

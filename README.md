@@ -176,6 +176,46 @@ account.start_date = tomorrow
 account.end_date = tomorrow + 5.days
 ```
 
+## Factory method
+
+Timespan now has the class level factory methods `#from` and `#untill`. 
+
+### From
+
+```ruby
+account = Account.create :period => Timespan.from :tomorrow, 7.days
+
+# today
+Timespan.from :today, 7.days
+
+# now
+Timespan.from :asap, 7.days
+Timespan.from :now, 7.days
+
+# now
+Timespan.from :today, 7.days
+
+# starting one week from today
+Timespan.from :next_week, 7.days
+
+# starting first day next week
+Timespan.from :next_week, 7.days, start: true
+
+# starting first day next month
+Timespan.from :next_month, 7.days, start: true
+```
+
+### Untill
+
+Creates timespan from `Time.now` until the time specified.
+
+```ruby
+Timespan.untill :tomorrow
+Timespan.untill :next_week
+Timespan.untill :next_month, start: true
+Timespan.untill 2.days.from_now
+```
+
 ## Searching periods
 
 ```ruby
