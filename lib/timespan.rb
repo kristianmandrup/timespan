@@ -60,41 +60,44 @@ class Timespan
 		@is_new = false
 	end
 
-	def self.from start, duration, options = {}
-		start = case start.to_sym
-		when :now, :asap
-			Time.now
-		when :today
-			Date.today
-		when :tomorrow
-			Date.today + 1.day
-		when :next_week # requires active_support
-			date = Date.today.next_week
-			options[:start] ? date.beginning_of_week : date
-		when :next_month			
-			date = Date.today.next_month
-			options[:start] ? date.at_beginning_of_month.next_month : date
-		else
-			start
+	class << self
+		def from start, duration, options = {}
+			start = case start.to_sym
+			when :now, :asap
+				Time.now
+			when :today
+				Date.today
+			when :tomorrow
+				Date.today + 1.day
+			when :next_week # requires active_support
+				date = Date.today.next_week
+				options[:start] ? date.beginning_of_week : date
+			when :next_month			
+				date = Date.today.next_month
+				options[:start] ? date.at_beginning_of_month.next_month : date
+			else
+				start
+			end
+
+			self.new start_date: start, duration: duration
 		end
 
-		self.new start_date: start, duration: duration
-	end
-
-	def self.untill ending
-		ending = case ending.to_sym
-		when :tomorrow
-			Date.today + 1.day
-		when :next_week # requires active_support
-			date = Date.today.next_week
-			options[:start] ? date.beginning_of_week : date
-		when :next_month			
-			date = Date.today.next_month
-			options[:start] ? date.at_beginning_of_month.next_month : date
-		else
-			ending
+		def untill ending
+			ending = case ending.to_sym
+			when :tomorrow
+				Date.today + 1.day
+			when :next_week # requires active_support
+				date = Date.today.next_week
+				options[:start] ? date.beginning_of_week : date
+			when :next_month			
+				date = Date.today.next_month
+				options[:start] ? date.at_beginning_of_month.next_month : date
+			else
+				ending
+			end
+			self.new start_date: Date.now, end_date: ending
 		end
-		self.new start_date: Date.now, end_date: ending
+		alias_method :until, :untill
 	end
 
 	def start_time= time
@@ -122,10 +125,23 @@ class Timespan
 	end
 	alias_method :end_date=, :end_time=
 
-	def until time
+	def asap?
+		@asap
+	end
+
+	def min
+		asap ? Time.now : start_time
+	end
+
+	def max
+		end_time
+	end
+
+	def untill time
 		self.end_time =	time
 		self
 	end
+	alias_method :until, :untill
 
 	def convert_to_time time
 		case time
@@ -153,7 +169,9 @@ class Timespan
 		from 	= options[first_from(START_KEYS, options)]
 		to 		= options[first_from(END_KEYS, options)]
 		dur 	= options[first_from(DURATION_KEYS, options)]
+		asap  = options[:asap]
 
+		self.asap 				= asap if asap
 		self.duration 		= dur if dur
 		self.start_time 	= from if from
 		self.end_time 		= to if to

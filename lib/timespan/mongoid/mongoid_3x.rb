@@ -1,5 +1,13 @@
+require 'timespan/mongoid/selectable'
+require 'timespan/core_ext/hash'
+
 class Timespan
   Serializer = Mongoid::Fields::Timespan
+
+  def __evolve_to_timespan__
+    self
+  end
+
 
   # See http://mongoid.org/en/mongoid/docs/upgrading.html        
 
@@ -9,7 +17,7 @@ class Timespan
   # @param [Timespan, Hash, Integer, String] value
   # @return [Hash] Timespan in seconds
   def mongoize
-    {:from => Serializer.serialize_time(start_time), :to => Serializer.serialize_time(end_time), :duration => duration.total }
+    {:from => Serializer.serialize_time(start_time), :to => Serializer.serialize_time(end_time), :duration => duration.total, :asap => asap? }
   end
 
   class << self
@@ -38,7 +46,7 @@ class Timespan
       return if !object
       case object
       when Hash
-        ::Timespan.new :from => Serializer.from(object), :to => Serializer.to(object)
+        object.__evolve_to_timespan__
       else
         ::Timespan.new object
       end        
@@ -47,10 +55,41 @@ class Timespan
     # Converts the object that was supplied to a criteria and converts it
     # into a database friendly form.
     def evolve(object)
-      case object
-      when Timespan then object.mongoize
-      else object
+      object.__evolve_to_timespan__.mongoize
+    end
+
+    def custom_serialization?(operator)
+      return false unless operator
+      case operator
+        when '$gte', '$gt', '$lt', '$lte', '$eq', '$between', '$btw'
+          true
+      else
+        false
       end
+    end
+
+    def custom_specify(name, operator, value, options = {})
+      timespan = value.__evolve_to_timespan__
+      case operator
+        when '$gte', '$gt', '$lt', '$lte', '$eq', '$between', '$btw'
+          specify_with_asap(name, operator, timespan, options)
+      else
+        raise RuntimeError, "Unsupported operator"
+      end
+    end
+
+    def specify_with_asap(name, operator, timespan, options)
+      query = { 'from' => {}, 'to' => {} }
+      case operator      
+      when '$gte', '$gt'
+        query['from'][operator] = Serializer.serialize_time(timespan.min)
+      when '$lte', '$lt', '$eq'
+        query['to'][operator] = Serializer.serialize_time(timespan.min)
+      when '$between', '$btw'
+        query['from']['$gte'] = Serializer.serialize_time(timespan.min)
+        query['to']['$lte'] = Serializer.serialize_time(timespan.max)
+      end
+      query
     end
   end
 end

@@ -39,6 +39,12 @@ module Mongoid
           deserialize_time to_value
         end
 
+        def asap hash
+          asap_value = hash['asap'] || hash[:asap]
+          raise ArgumentError, ":asap is nil, #{hash.inspect}" if ![true, false, nil].include? asap_value
+          asap_value
+        end
+
         def serialize_time time
           raise ArgumentError, "Can't serialize time from nil" if time.nil?
           time.to_i
