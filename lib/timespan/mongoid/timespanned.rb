@@ -3,6 +3,35 @@ module Mongoid
     extend ActiveSupport::Concern
 
     module ClassMethods
+      def asap_method path
+        define_method :asap do
+          {:"#{path}.from".gte => min_asap, :"#{path}.from".lte => max_asap}
+        end
+      end
+
+      def duration_methods path
+        define_method :exactly do |period|
+          period.kind_of?(Integer) ? period : period.to_i
+          [{:"#{path}.from" => period}, {:"#{path}.to" => period}]
+        end
+
+        define_method :in_between do |range|
+          range_min = range.min.kind_of?(Integer) ? range.min : range.min.to_i
+          range_max = range.max.kind_of?(Integer) ? range.max : range.max.to_i
+          [{:"#{path}.from" => range_min}, {:"#{path}.to" => range_max}]
+        end
+
+        define_method :at_least do |period|
+          period.kind_of?(Integer) ? period : period.to_i
+          {:"#{path}.to".gte => period }
+        end
+
+        define_method :at_most do |period|
+          period.kind_of?(Integer) ? period : period.to_i
+          {:"#{path}.to".lte => period }
+        end
+      end
+
       # fx Account.timespan_container_delegates :period, :dates, :start, :end
       #   start_date= -> period.dates_start=
       #   end_date= -> period.dates_end=
