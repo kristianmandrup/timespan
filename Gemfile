@@ -14,7 +14,7 @@ group :test, :development do
   # gem 'bson',     '>= 1.6'
 
   gem 'mongoid',  '~> 3.0'
-  gem 'origin-selectable_ext'
+  gem 'origin-selectable_ext', '~> 0.1.1'
   # gem 'i18n'
 end
 

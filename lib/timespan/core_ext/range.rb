@@ -22,7 +22,7 @@ class DurationRange < DelegateDecorator
   end
 
   def mongoize
-    {:from => range.min, :to => range.max}
+    {:from => range.min.to_i, :to => range.max.to_i}
   end
 
   def between? duration
@@ -44,16 +44,17 @@ class DurationRange < DelegateDecorator
     # @param [Timespan, Hash, Integer, String] value
     # @return [Hash] Timespan in seconds
     def mongoize object
-      case object
+      mongoized = case object
       when DurationRange then object.mongoize
       when Hash
-        range = Range.new parse(object[:from]).total, parse(object[:to]).total
-        ::DurationRange.new mongoize(range)
+        object
       when Range
-        object.send(:seconds)
+        object.send(:seconds).mongoize
       else
         object
       end
+      puts "mongoized: #{mongoized} - Hash"
+      mongoized
     end
 
     # Deserialize a Timespan given the hash stored by Mongodb
@@ -62,12 +63,15 @@ class DurationRange < DelegateDecorator
     # @return [Timespan] deserialized Timespan
     def demongoize(object)
       return if !object
-      case object
+      
+      demongoized = case object
       when Hash
         object.__evolve_to_duration_range__
       else
-        parse object
-      end        
+        raise "Unable to demongoize DurationRange from: #{object}"
+      end    
+      puts "demongoized: #{demongoized} - DurationRange"
+      mongoized
     end
 
     # Converts the object that was supplied to a criteria and converts it
