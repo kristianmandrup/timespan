@@ -53,7 +53,7 @@ class DurationRange < DelegateDecorator
       else
         object
       end
-      puts "mongoized: #{mongoized} - Hash"
+      # puts "mongoized: #{mongoized} - Hash"
       mongoized
     end
 
@@ -70,8 +70,8 @@ class DurationRange < DelegateDecorator
       else
         raise "Unable to demongoize DurationRange from: #{object}"
       end    
-      puts "demongoized: #{demongoized} - DurationRange"
-      mongoized
+      # puts "demongoized: #{demongoized} - DurationRange"
+      demongoized
     end
 
     # Converts the object that was supplied to a criteria and converts it

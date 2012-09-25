@@ -6,6 +6,7 @@ class Hash
   end
 
   def __evolve_to_duration_range__
-    ::DurationRange.new Range.new(self[:from], self[:to]), :seconds
+    range = Range.new self['from'], self['to']
+    ::DurationRange.new range, :seconds
   end
 end

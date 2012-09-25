@@ -20,11 +20,11 @@ class Account
     acc
   end
 
-  def to_s
-    %Q{
-name: #{name}
-}
-  end
+#   def to_s
+#     %Q{
+# name: #{name}
+# }
+#   end
 
   def self.between from, to
     Account.where(:'period.from'.gt => from.to_i, :'period.to'.lte => to.to_i)
