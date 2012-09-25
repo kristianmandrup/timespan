@@ -4,7 +4,7 @@ require 'chronic_duration'
 require 'spanner'
 
 # Range intersection that works with dates!
-require 'timespan/core_ext/range'
+require 'sugar-high/range'
 
 require 'timespan/units'
 require 'timespan/compare'
