@@ -14,7 +14,12 @@ describe TimeSpan do
     10.days.from_now.to_i
   end
 
-  context '5 Accounts with periods serialized' do
+  context '10 Accounts with period and duration-range' do
+
+    # TODO: 
+    # Doesn't handle dynamic ASAP as attempted 
+    # implemented via custom_specify
+
     before do
       Account.delete_all
 
