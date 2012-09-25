@@ -4,7 +4,7 @@ gem 'chronic'
 gem 'chronic_duration'
 gem 'activesupport', '>= 3.0.0'
 gem 'spanner'
-gem 'sugar-high', '~> 0.7.1' # for range intersect
+gem 'sugar-high', '~> 0.7.2' # for range intersect
 gem 'xduration', '~> 2.2'
 
 group :test, :development do

@@ -309,6 +309,23 @@ TimeSpan.start_field = :start
 TimeSpan.end_field = :end
 ```
 
+## Ranges
+
+A Range can be converted into either a `Timespan` or a `DurationRange`
+
+### DurationRange
+
+```ruby
+dr = (1..5).days # => DurationRange 1..5, :days
+ts =(1..5).days(:timespan) # => Timespan start_date: 1.day.from_now, end_date: 5.days.from_now
+
+dr.between?(4.days) # => true
+```
+
+You can also use Range#intersect from *sugar-high* gem to test intersection of time ranges ;)
+
+### Timespan
+
 ## Contributing to Timespan
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet.

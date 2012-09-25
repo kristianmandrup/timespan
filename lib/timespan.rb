@@ -5,6 +5,10 @@ require 'spanner'
 
 # Range intersection that works with dates!
 require 'sugar-high/range'
+require 'sugar-high/delegate'
+require 'sugar-high/kind_of'
+
+require 'timespan/core_ext'
 
 require 'timespan/units'
 require 'timespan/compare'
@@ -47,7 +51,6 @@ class Timespan
 
 	def initialize options = {}
 		@is_new = true
-
 		@init_options = options
 		validate! if options == {}
 
@@ -64,6 +67,26 @@ class Timespan
 	end
 
 	class << self
+		def max_date
+			@max_date ||= Time.now + 10.years
+		end
+
+		def min_date
+			@min_date ||= Time.now
+		end
+
+		def max_date= date
+			@max_date = date if valid_date?(date)
+		end
+
+		def min_date= date
+			@max_date = date if valid_date?(date)
+		end
+
+		def asap options = {}
+			self.new options.merge(asap: true)
+		end
+
 		def from start, duration, options = {}
 			start = case start.to_sym
 			when :now, :asap
@@ -101,6 +124,12 @@ class Timespan
 			self.new start_date: Date.now, end_date: ending
 		end
 		alias_method :until, :untill
+
+		protected
+
+		def valid_date? date
+			date.any_kind_of?(Date, Time, DateTime)
+		end
 	end
 
 	def start_time= time
@@ -147,15 +176,18 @@ class Timespan
 	alias_method :until, :untill
 
 	def convert_to_time time
+		time = Duration.new time if time.kind_of? Numeric				 
 		case time
 		when String
 			Chronic.parse(time)
 		when Date, DateTime
 			time.to_time
+		when Duration
+			(Time.now + time).to_time
 		when Time
 			time
 		else
-			raise ArgumentError, "A valid time must be either a String, Date, Time or DateTime, was: #{time.inspect}"
+			raise ArgumentError, "A valid time must be either a String, Duration, Date, Time or DateTime, was: #{time.inspect} (#{time.class})"
 		end
 	end
 
@@ -174,18 +206,38 @@ class Timespan
 		dur 	= options[first_from(DURATION_KEYS, options)]
 		asap  = options[:asap]
 
-		self.asap 				= asap if asap
+		if options[:at_least]
+			to = Timespan.max_date 
+			from = Time.now + options[:at_least]
+		end
+
+		if options[:at_most]
+			to   = Time.now + options[:at_most]
+			from = Time.now
+		end
+
+		if options[:between]
+			from = Time.now + options[:between].min
+			to = Time.now + options[:between].max
+		end
+
+		# puts "configure: to:#{to}, from:#{from}, dur:#{dur}, asap:#{asap}"
+
+		@asap 						= asap if asap
 		self.duration 		= dur if dur
 		self.start_time 	= from if from
 		self.end_time 		= to if to
+
+		# puts "configured: start:#{self.start_time}, end:#{self.end_time}, duration:#{self.duration}, asap:#{self.asap?}"
 
 		default_from_now!
 		calculate_miss!
 	rescue ArgumentError => e
 		raise TimeParseError, e.message
-	rescue Exception => e
-		calculate_miss!
-		validate!
+	# rescue Exception => e
+	# 	puts "Exception: #{e}"
+	# 	calculate_miss!
+	# 	validate!
 	end		
 
 	def default_from_now!
