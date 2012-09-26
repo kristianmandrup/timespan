@@ -54,41 +54,25 @@ describe TimeSpan do
                              time_period: TimePeriod.new(flex: (3..6).minutes)
     end
 
-    def yesterday
-      1.day.ago.to_i
-    end
-
-    def where_hash
-      {:'period.from'.gte => yesterday, :'period.from'.lte => max_asap}
-    end
-
-    def exactly
-      [{:'time_period.flex.from' => period}, {:'time_period.flex.to' => period}]
-    end
-
-    def in_between
-      [{:'time_period.flex.from' => min_period}, {:'time_period.flex.to' => max_period}]
-    end
-
-    def at_least type = :min
-      {:'time_period.flex.to'.gte => send("#{type}_period") }
-    end
-
-    def at_most type = :max
-      {:'time_period.flex.to'.lte => send("#{type}_period") }
-    end
-
     describe 'ASAP 2 minutes' do
       let(:period) { 2.minutes.to_i }
 
       let(:criteria) do
-        Account.where(where_hash).or(exactly)
+        Account.where(TimePeriod.asap).or(TimePeriod.exactly period)
       end
 
       # it 'should have a nice criteria' do
       #   criteria.selector['$or'].should == [{"time_period.flex.from"=>120}, {"time_period.flex.to"=>120}]
       #   criteria.selector["period.from"].should be_a Hash
       # end
+
+      it 'should have custom max_asap' do
+        TimePeriod.max_asap.should == 14.days.from_now.to_i
+      end
+
+      it 'should have custom min_asap' do
+        TimePeriod.min_asap.should == 2.days.ago.to_i
+      end
 
       it 'should find #1, #2, #3, #4, #5' do
         criteria.to_a.map(&:name).should include '1', '2', '5', '7'
@@ -107,7 +91,7 @@ describe TimeSpan do
       let(:period) { 3.minutes.to_i }
 
       let(:criteria) do
-        Account.where(where_hash).or(exactly)
+        Account.where(TimePeriod.asap).or(TimePeriod.exactly period)
       end
 
       it 'should find #4, #10' do
@@ -120,7 +104,7 @@ describe TimeSpan do
       let(:period) { 4.minutes.to_i }
 
       let(:criteria) do
-        Account.where(where_hash).or(exactly)
+        Account.where(TimePeriod.asap).or(TimePeriod.exactly period)
       end
 
       it 'should find #2, #3' do
@@ -129,11 +113,10 @@ describe TimeSpan do
     end
 
     describe 'ASAP 1-4 minutes' do
-      let(:min_period) { 1.minute }
-      let(:max_period) { 4.minutes }
+      let(:period) { 1.minute..4.minutes }
 
       let(:criteria) do
-        Account.where(where_hash).or(in_between)
+        Account.where(TimePeriod.asap).or(TimePeriod.in_between period)
       end
 
       it 'should find #2, #3' do
@@ -146,8 +129,7 @@ describe TimeSpan do
     end
 
     describe 'ASAP 3-5 minutes' do
-      let(:min_period) { 3.minutes }
-      let(:max_period) { 5.minutes }
+      let(:period) { 3.minutes..5.minutes }
 
       it 'should have a nice criteria' do
         # puts "ASAP 3-5 minutes"
@@ -158,7 +140,7 @@ describe TimeSpan do
       end
 
       let(:criteria) do
-        Account.where(where_hash).or(in_between)
+        Account.where(TimePeriod.asap).or(TimePeriod.in_between period)
       end
 
       it 'should find #2, #3' do
@@ -169,11 +151,10 @@ describe TimeSpan do
     end
 
     describe 'ASAP 5-7 minutes' do
-      let(:min_period) { 5.minutes }
-      let(:max_period) { 7.minutes }
+      let(:period) { 5.minutes..7.minutes }
 
       let(:criteria) do
-        Account.where(where_hash).or(in_between)
+        Account.where(TimePeriod.asap).or(TimePeriod.in_between period)
       end
 
       it 'should find #2, #3' do
@@ -184,10 +165,10 @@ describe TimeSpan do
     end
 
     describe 'ASAP at least 4 minutes' do
-      let(:min_period) { 4.minutes }
+      let(:period) { 4.minutes }
 
       let(:criteria) do
-        Account.where where_hash.merge(at_least)
+        Account.where TimePeriod.asap.merge(TimePeriod.at_least period)
       end
 
       it 'should find #2, #3' do
@@ -199,10 +180,10 @@ describe TimeSpan do
     end
 
     describe 'ASAP at most 3 minutes' do
-      let(:max_period) { 3.minutes }
+      let(:period) { 3.minutes }
 
       let(:criteria) do
-        Account.where where_hash.merge(at_most)
+        Account.where TimePeriod.asap.merge(TimePeriod.at_most period)
       end
 
       it 'should find #2, #3' do

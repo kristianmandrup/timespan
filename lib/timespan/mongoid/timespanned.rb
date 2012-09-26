@@ -3,32 +3,37 @@ module Mongoid
     extend ActiveSupport::Concern
 
     module ClassMethods
+      attr_writer :max_asap, :min_asap
+
+      def max_asap time = nil
+        @max_asap ||= (time || 10.days.from_now).to_i
+      end
+
+      def min_asap time = nil
+        @min_asap ||= (time || 1.day.ago).to_i        
+      end
+
       def asap_method path
-        define_method :asap do
+        define_singleton_method :asap do
           {:"#{path}.from".gte => min_asap, :"#{path}.from".lte => max_asap}
         end
       end
 
       def duration_methods path
-        define_method :exactly do |period|
-          period.kind_of?(Integer) ? period : period.to_i
-          [{:"#{path}.from" => period}, {:"#{path}.to" => period}]
+        define_singleton_method :exactly do |period|
+          [{:"#{path}.from" => period.to_i}, {:"#{path}.to" => period.to_i}]
         end
 
-        define_method :in_between do |range|
-          range_min = range.min.kind_of?(Integer) ? range.min : range.min.to_i
-          range_max = range.max.kind_of?(Integer) ? range.max : range.max.to_i
-          [{:"#{path}.from" => range_min}, {:"#{path}.to" => range_max}]
+        define_singleton_method :in_between do |range|
+          [{:"#{path}.from" => range.min.to_i}, {:"#{path}.to" => range.max.to_i}]
         end
 
-        define_method :at_least do |period|
-          period.kind_of?(Integer) ? period : period.to_i
-          {:"#{path}.to".gte => period }
+        define_singleton_method :at_least do |period|
+          {:"#{path}.to".gte => period.to_i }
         end
 
-        define_method :at_most do |period|
-          period.kind_of?(Integer) ? period : period.to_i
-          {:"#{path}.to".lte => period }
+        define_singleton_method :at_most do |period|
+          {:"#{path}.to".lte => period.to_i }
         end
       end
 

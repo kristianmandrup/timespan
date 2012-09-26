@@ -9,13 +9,9 @@ class TimePeriod
 
   timespan_methods :dates
 
-  def max_asap
-    10.days.from_now.to_i
-  end
-
-  def min_asap
-    1.day.ago.to_i
-  end
+  # override defaults
+  max_asap 14.days.from_now
+  min_asap 2.days.ago
 
   asap_method :period
   duration_methods 'time_period.flex'
