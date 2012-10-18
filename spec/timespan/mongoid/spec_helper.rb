@@ -28,4 +28,6 @@ end
 
 require 'timespan/mongoid'
 
-require "timespan/mongoid/models/account_#{Mongoid::MAJOR_VERSION}x"
+def load_models!
+  require "timespan/mongoid/models/account_#{Mongoid::MAJOR_VERSION}x"
+end

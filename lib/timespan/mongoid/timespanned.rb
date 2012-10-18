@@ -2,6 +2,18 @@ module Mongoid
   module Timespanned
     extend ActiveSupport::Concern
 
+    class << self
+      attr_accessor :log
+
+      def log msg
+        puts msg # if log?
+      end
+
+      def log?
+        @log
+      end
+    end
+
     module ClassMethods
       attr_writer :max_asap, :min_asap
 
@@ -50,22 +62,29 @@ module Mongoid
 
       def timespan_container_delegate container, timespan, name, options = {}
         override = options[:override]
+        mt = Mongoid::Timespanned
         case name.to_sym
         when :start
           meth = "start_date="
           raise ArgumentError, "method #{meth} already defined on #{self}" if self.respond_to?(meth) && ! override
+
+          mt.log "#{self} define container delegate: #{meth} to #{container}.#{timespan}_start="
           define_method meth do |date|            
             self.send(container).send("#{timespan}_start=", date)
           end
         when :end
           meth = "end_date="
           raise ArgumentError, "method #{meth} already defined on #{self}" if self.respond_to?(meth) && !override
+
+          mt.log "#{self} define container delegate: #{meth} to #{container}.#{timespan}_end="
           define_method meth do |date|
             self.send(container).send("#{timespan}_end=", date)
           end
         when :duration
           meth = "duration="
           raise ArgumentError, "method duration= already defined on #{self}" if self.respond_to?(meth) && !override
+
+          mt.log "#{self} define container delegate: #{meth} to #{container}.#{timespan}_duration="
           define_method meth do |date|
             self.send(container).send("#{timespan}_duration=", date)
           end
@@ -98,7 +117,10 @@ module Mongoid
 
       def timespan_delegate meth, target = :period, options = {}
         override = options[:override]
+        mt = Mongoid::Timespanned
         raise ArgumentError, "method #{meth} already defined on #{self}" if self.respond_to?(meth) && !override
+
+        mt.log "#{self} define delegate: #{meth} to #{target}"
         delegate meth, to: target
       end
 
@@ -113,12 +135,14 @@ module Mongoid
 
       def timespan_setter name, meth_name, options = {}
         override = options[:override]
+        mt = Mongoid::Timespanned
         case meth_name.to_sym
         when :start
           meth = "#{name}_start="
           raise ArgumentError, "method #{meth} already defined on #{self}" if self.respond_to?(meth) && !override
 
-          define_method :"#{name}_start=" do |date|
+          mt.log "#{self} define setter: #{meth}"
+          define_method meth do |date|
             options = self.send(name) ? {end_date: self.send(name).end_date} : {}
             timespan = ::Timespan.new(options.merge(start_date: date))
             self.send "#{name}=", timespan
@@ -127,7 +151,8 @@ module Mongoid
           meth = "#{name}_end="
           raise ArgumentError, "method #{meth} already defined on #{self}" if self.respond_to?(meth) && !override
 
-          define_method :"#{name}_end=" do |date|
+          mt.log "#{self} define setter: #{meth}"
+          define_method meth do |date|
             options = self.send(name) ? {start_date: self.send(name).start_date} : {}
             timespan = ::Timespan.new(options.merge(end_date: date))
             self.send "#{name}=", timespan
@@ -136,7 +161,9 @@ module Mongoid
           meth = "#{name}_duration="
           raise ArgumentError, "method #{meth} already defined on #{self}" if self.respond_to?(meth) && !override
 
-          define_method :"#{name}_duration=" do |duration|
+          mt.log "#{self} define setter: #{meth}"
+
+          define_method meth do |duration|
             options = self.send(name) ? {start_date: self.send(name).start_date} : {}
             timespan = ::Timespan.new(options.merge(duration: duration))
             self.send "#{name}=", timespan

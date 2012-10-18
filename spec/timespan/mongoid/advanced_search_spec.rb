@@ -1,4 +1,5 @@
 require 'timespan/mongoid/spec_helper'
+load_models!
 
 describe TimeSpan do
   subject { account }

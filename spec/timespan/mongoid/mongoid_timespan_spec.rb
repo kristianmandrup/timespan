@@ -1,5 +1,8 @@
 require 'timespan/mongoid/spec_helper'
 
+Mongoid::Timespanned.log = true
+load_models!
+
 describe TimeSpan do
 	subject { account }
 
@@ -13,7 +16,15 @@ describe TimeSpan do
   context 'factory method #from' do
     describe ':today' do
       let(:account) do 
-        Account.create period: Timespan.from(:today, 5.days)
+        Account.create period: ::Timespan.from(:today, 5.days)
+      end
+
+      describe '.to_s' do
+        it 'should return a non-empty String starting with from' do      
+          subject.period.to_s.should be_a String
+          subject.period.to_s.should_not be_empty
+          subject.period.to_s.should match(/^from/)
+        end
       end
 
       describe '.start_date' do
@@ -154,6 +165,7 @@ describe TimeSpan do
         subject.period_start = tomorrow
         subject.period_end = tomorrow + 5.days
 
+        subject.time_period.dates_end = tomorrow + 3.days
         subject.end_date = tomorrow + 3.days
       end
 
