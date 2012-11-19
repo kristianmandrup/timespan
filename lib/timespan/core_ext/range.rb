@@ -1,20 +1,38 @@
 class TimespanRange < DelegateDecorator
   attr_accessor :unit, :range
 
-  def initialize range, unit
-    super(range)
+  def initialize range, unit = :minutes
+    range = (0..60) if range.min == nil || range.max == nil
+    super(range, except: %w{to_s to_str})
     @range = Timespan.new between: range
-    @unit = unit.to_s.singularize.to_sym
+    @unit = unit.to_s.pluralize.to_sym
+  end
+
+  def to_str
+    to_s
+  end
+
+  def to_s
+    range.min.nil? ? 'no timespan range' : "#{range.min} to #{range.max} #{unit}"
   end
 end
 
 class DurationRange < DelegateDecorator
   attr_accessor :unit, :range
 
-  def initialize range, unit
-    super(range)
-    @unit = unit.to_s.singularize.to_sym
+  def initialize range, unit = :minutes
+    range = (0..60) if range.min == nil || range.max == nil  
+    super(range, except: %w{to_s to_str})
+    @unit = unit.to_s.pluralize.to_sym
     @range = range
+  end
+
+  def to_str
+    to_s
+  end
+
+  def to_s
+    range.min.nil? ? 'no duration range' : "#{range.min} to #{range.max} #{unit}"
   end
 
   def __evolve_to_duration_range__
@@ -70,7 +88,7 @@ class DurationRange < DelegateDecorator
       else
         raise "Unable to demongoize DurationRange from: #{object}"
       end    
-      # puts "demongoized: #{demongoized} - DurationRange"
+      # puts "demongoized: #{demongoized} - #{demongoized.class}"
       demongoized
     end
 
@@ -107,7 +125,6 @@ class DurationRange < DelegateDecorator
 
   end 
 end
-
 
 class Range
   [:seconds, :minutes, :hours, :days, :weeks, :months, :years].each do |unit|

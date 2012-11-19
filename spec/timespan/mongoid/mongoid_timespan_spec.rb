@@ -7,7 +7,15 @@ describe TimeSpan do
 	subject { account }
 
   def tomorrow
-    Date.today + 1.day
+    @tmrw ||= today + 1.day
+  end
+
+  def today
+    @today ||= Date.today
+  end
+
+  def format_date date
+    DateTime.parse(date.to_s).strftime('%d %b %Y')
   end
 
   let(:from) { Chronic.parse("1 day ago") }
@@ -29,7 +37,7 @@ describe TimeSpan do
 
       describe '.start_date' do
         it 'should default to today' do
-          DateTime.parse(subject.period.start_date.to_s).strftime('%d %b %Y').should == Date.today.strftime('%d %b %Y')
+          format_date(subject.period.start_date).should == format_date(today)
         end
       end
 
@@ -41,31 +49,7 @@ describe TimeSpan do
 
       describe '.end_date' do
         it 'should be 5 days from today' do
-          DateTime.parse(subject.period.end_date.to_s).strftime('%d %b %Y').should == (Date.today + 5.days).strftime('%d %b %Y')
-        end
-      end
-    end
-
-    describe ':asap' do
-      let(:account) do 
-        Account.create period: Timespan.from(:asap, 5.days)
-      end
-
-      describe '.start_date' do
-        it 'should default to today' do
-          DateTime.parse(subject.period.start_date.to_s).strftime('%d %b %Y').should == Date.today.strftime('%d %b %Y')
-        end
-      end
-
-      describe '.duration' do
-        it 'should be 5 days' do
-          subject.period.to_days.should == 5
-        end
-      end
-
-      describe '.end_date' do
-        it 'should be 5 days from today' do
-          DateTime.parse(subject.period.end_date.to_s).strftime('%d %b %Y').should == (Date.today + 5.days).strftime('%d %b %Y')
+          format_date(subject.period.end_date).should == format_date(today + 5.days)
         end
       end
     end
@@ -77,7 +61,7 @@ describe TimeSpan do
 
       describe '.start_date' do
         it 'should be tomorrow' do
-          DateTime.parse(subject.period.start_date.to_s).strftime('%d %b %Y').should == Date.tomorrow.strftime('%d %b %Y')
+          format_date(subject.period.start_date).should == format_date(Date.tomorrow)
         end
       end
 
@@ -89,7 +73,7 @@ describe TimeSpan do
 
       describe '.end_date' do
         it 'should be 5 days from tomorrow' do
-          DateTime.parse(subject.period.end_date.to_s).strftime('%d %b %Y').should == (Date.tomorrow + 5.days).strftime('%d %b %Y')
+          format_date(subject.period.end_date).should == format_date(Date.tomorrow + 5.days)
         end
       end
     end
@@ -101,7 +85,7 @@ describe TimeSpan do
 
       describe '.start_date' do
         it 'should be 1 week from today' do
-          DateTime.parse(subject.period.start_date.to_s).strftime('%d %b %Y').should == Date.next_week.strftime('%d %b %Y')
+          format_date(subject.period.start_date).should == format_date(Date.next_week)
         end
       end
 
@@ -113,7 +97,7 @@ describe TimeSpan do
 
       describe '.end_date' do
         it 'should be 5 days from next week' do
-          DateTime.parse(subject.period.end_date.to_s).strftime('%d %b %Y').should == (Date.next_week + 5.days).strftime('%d %b %Y')
+          format_date(subject.period.end_date).should == format_date(Date.next_week + 5.days)
         end
       end
     end
@@ -126,7 +110,7 @@ describe TimeSpan do
 
     describe '.start_date' do
       it 'should default to today' do
-        DateTime.parse(subject.period.start_date.to_s).strftime('%d %b %Y').should == Date.today.strftime('%d %b %Y')
+        format_date(subject.period.start_date).should == format_date(Date.today)
       end
     end
   end
@@ -138,7 +122,7 @@ describe TimeSpan do
 
     describe '.start_date' do
       it 'should default to today' do
-        DateTime.parse(subject.period.start_date.to_s).strftime('%d %b %Y').should == Date.today.strftime('%d %b %Y')
+        format_date(subject.period.start_date).should == format_date(Date.today)
       end
     end
   end
@@ -150,7 +134,7 @@ describe TimeSpan do
 
     describe '.start_date' do
       it 'should default to today' do
-        DateTime.parse(subject.period.start_date.to_s).strftime('%d %b %Y').should == Date.today.strftime('%d %b %Y')
+        format_date(subject.period.start_date).should == format_date(Date.today)
       end
     end
   end
@@ -170,7 +154,7 @@ describe TimeSpan do
       end
 
       specify do
-        Date.parse(subject.time_period.end_date.to_s).should == tomorrow + 3.days
+        format_date(subject.time_period.end_date).should == format_date(tomorrow + 3.days)
       end
 
       specify do
@@ -186,7 +170,7 @@ describe TimeSpan do
       end
 
       specify do
-        Date.parse(subject.start_date.to_s).should == tomorrow
+        format_date(subject.start_date).should == format_date(tomorrow)
       end
     end
   end

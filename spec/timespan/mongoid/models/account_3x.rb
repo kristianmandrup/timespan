@@ -13,9 +13,10 @@ class Account
   
   timespan_container_delegates :time_period, :dates, :all
 
-  def self.create_it! duration
+  def self.create_it! duration, flex = nil
     acc = self.new period: ::Timespan.new(duration: duration), time_period: ::TimePeriod.new
     acc.time_period.dates_duration = 1.day
+    acc.time_period.flex = flex if flex
     acc
   end
 

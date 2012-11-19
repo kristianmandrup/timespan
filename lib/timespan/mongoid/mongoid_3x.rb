@@ -17,7 +17,14 @@ class Timespan
   # @param [Timespan, Hash, Integer, String] value
   # @return [Hash] Timespan in seconds
   def mongoize
-    {:from => Serializer.serialize_time(start_time), :to => Serializer.serialize_time(end_time), :duration => duration.total, :asap => asap? }
+    hash = { 
+      :from => Serializer.serialize_time(start_time), 
+      :to => Serializer.serialize_time(end_time), 
+      :duration => duration.total, 
+      :asap => asap? 
+    }
+    # puts "serialize: #{hash}"
+    hash
   end
 
   class << self

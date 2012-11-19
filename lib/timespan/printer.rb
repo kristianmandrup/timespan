@@ -16,11 +16,15 @@ class Timespan
 		# %td  => total days
   	# %th  => total hours
   	# %tm  => total minutes
-  	# %ts  => total seconds
+  	# %ts  => total seconds  	
 		def to_s mode = :full
 			meth = "print_#{mode}"
 			raise ArgumentError, "Print mode not supported, was: #{mode}" unless respond_to?(meth)
 			send(meth)
+		end
+
+		def to_str
+			to_s
 		end
 
 		def print_dates
@@ -44,6 +48,9 @@ class Timespan
 		def print type
 			return duration.format(duration_format) if type == :duration
 			raise ArgumentError, "Not a valid print type, was: #{type}" unless valid_print_type? type
+
+			return "ASAP" if type == :start_time && asap?
+
 			send(type).strftime(time_format)
 		end
 	

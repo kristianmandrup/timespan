@@ -28,7 +28,7 @@ describe DurationRange do
     its(:range) { should be_a Range }
     its(:min) { should == 1.day }
     its(:max) { should == 5.days }
-    its(:unit) { should == :day }
+    its(:unit) { should == :days }
 
     specify { subject.between?(4.days).should be_true }
   end
@@ -39,7 +39,7 @@ describe DurationRange do
     its(:range) { should be_a Range }
     its(:min) { should == 1.week }
     its(:max) { should == 5.weeks }
-    its(:unit) { should == :week }
+    its(:unit) { should == :weeks }
   end
 
   context 'month range' do
@@ -47,7 +47,7 @@ describe DurationRange do
 
     its(:min) { should == 1.month }
     its(:max) { should == 5.months }
-    its(:unit) { should == :month }
+    its(:unit) { should == :months }
   end
 
   context 'year range' do
@@ -55,6 +55,6 @@ describe DurationRange do
 
     its(:min) { should == 1.year }
     its(:max) { should == 5.years }
-    its(:unit) { should == :year }
+    its(:unit) { should == :years }
   end
 end

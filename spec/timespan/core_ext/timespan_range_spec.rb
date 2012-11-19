@@ -25,7 +25,7 @@ describe TimespanRange do
     its(:range) { should be_a Timespan }
     its(:min) { should == 1.day }
     its(:max) { should == 5.days }
-    its(:unit) { should == :day }
+    its(:unit) { should == :days }
   end
 
   context 'week range' do
@@ -34,7 +34,7 @@ describe TimespanRange do
     its(:range) { should be_a Timespan }
     its(:min) { should == 1.week }
     its(:max) { should == 5.weeks }
-    its(:unit) { should == :week }
+    its(:unit) { should == :weeks }
   end
 
   context 'month range' do
@@ -43,7 +43,7 @@ describe TimespanRange do
     its(:range) { should be_a Timespan }
     its(:min) { should == 1.month }
     its(:max) { should == 5.months }
-    its(:unit) { should == :month }
+    its(:unit) { should == :months }
   end
 
   context 'year range' do
@@ -52,6 +52,6 @@ describe TimespanRange do
     its(:range) { should be_a Timespan }
     its(:min) { should == 1.year }
     its(:max) { should == 5.years }
-    its(:unit) { should == :year }
+    its(:unit) { should == :years }
   end
 end

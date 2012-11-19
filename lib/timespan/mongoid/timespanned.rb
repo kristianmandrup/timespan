@@ -2,15 +2,25 @@ module Mongoid
   module Timespanned
     extend ActiveSupport::Concern
 
+    def asap_for tspan_field = :period
+      ts = ::Timespan.asap duration: send(tspan_field).duration
+      self.send("#{tspan_field}=", ts)
+      self.save!
+    end
+
     class << self
       attr_accessor :log
 
       def log msg
-        puts msg # if log?
+        puts msg if log?
       end
 
       def log?
         @log
+      end
+
+      def log!
+        @log = true
       end
     end
 

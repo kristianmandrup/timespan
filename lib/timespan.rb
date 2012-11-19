@@ -43,9 +43,9 @@ class Timespan
 	alias_method :start_date, :start_time
 	alias_method :end_date, 	:end_time
 
-	START_KEYS 			= [:start, :from, :start_date]
-	END_KEYS 				= [:to, :end, :end_date]
-	DURATION_KEYS 	= [:duration, :lasting]
+	START_KEYS 			= [:start, :from, :start_date, :start_time, :start_from, :starting]
+	END_KEYS 				= [:to, :end, :end_date, :end_at, :ending]
+	DURATION_KEYS 	= [:duration, :lasting, :"for"]
 
 	ALL_KEYS = START_KEYS + END_KEYS + DURATION_KEYS
 
@@ -64,6 +64,14 @@ class Timespan
 		configure! options
 		
 		@is_new = false
+	end
+
+	def asap!
+		@asap = true
+	end
+
+	def asap= value
+		@asap = !!value
 	end
 
 	class << self
@@ -88,8 +96,10 @@ class Timespan
 		end
 
 		def from start, duration, options = {}
+			asap = false
 			start = case start.to_sym
 			when :now, :asap
+				asap = true
 				Time.now
 			when :today
 				Date.today
@@ -105,7 +115,7 @@ class Timespan
 				start
 			end
 
-			self.new start_date: start, duration: duration
+			self.new start_date: start, duration: duration, asap: asap
 		end
 
 		def untill ending
@@ -158,11 +168,11 @@ class Timespan
 	alias_method :end_date=, :end_time=
 
 	def asap?
-		@asap
+		!!@asap
 	end
 
 	def min
-		asap ? Time.now : start_time
+		asap? ? Time.now : start_time
 	end
 
 	def max

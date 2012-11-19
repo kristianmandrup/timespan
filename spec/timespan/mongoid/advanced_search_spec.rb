@@ -68,11 +68,11 @@ describe TimeSpan do
       # end
 
       it 'should have custom max_asap' do
-        TimePeriod.max_asap.should == 14.days.from_now.to_i
+        TimePeriod.max_asap.should be_within(2).of(14.days.from_now.to_i)
       end
 
       it 'should have custom min_asap' do
-        TimePeriod.min_asap.should == 2.days.ago.to_i
+        TimePeriod.min_asap.should == be_within(2).of(2.days.ago.to_i)
       end
 
       it 'should find #1, #2, #3, #4, #5' do
