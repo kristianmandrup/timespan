@@ -324,6 +324,38 @@ dr.between?(4.days) # => true
 
 You can also use Range#intersect from *sugar-high* gem to test intersection of time ranges ;)
 
+## Client side helpers
+
+This gem now includes som javascript assets to assist in performing date and timespan (duration) calculations on the client side also:
+
+* `moment.js` (1.7.2)
+* `date_ext.js` DP_DateExtensions
+* `timespan.js`
+
+### Example usage
+
+```javascript
+Date.timeleft("12/10/2012", "07/05/2013");
+```
+
+```javascript
+Date.timeleft(Date.create("12/10/2012"), "07/05/2013");
+```
+
+Aliases for timeleft are: `duration` and `timespan`.
+
+See the javascript source for the full API or check out http://momentjs.com/docs/ and http://depressedpress.com/javascript-extensions/dp_dateextensions/.
+
+Note: timeleft was extracted from (http://www.proglogic.com/code/javascript/time/timeleft.php)
+
+To use these assets with the Asset pipeline, simply add this to your `application.js` or similar manifest file :) (after jquery which is required!)
+
+```javascript
+//= require moment.js
+//= require date_ext.js
+//= require timespan.js
+```
+
 ### Timespan
 
 ## Contributing to Timespan
