@@ -22,6 +22,12 @@ describe DurationRange do
 
   let(:range) { (1..5) }
 
+  context 'invalid range unit' do  
+    it 'should not allow invalid time unit' do
+      expect { DurationRange.new range, :yuppies }.to raise_error
+    end
+  end
+
   context 'day range' do
     let (:timerange) { range.days }
 
@@ -56,5 +62,41 @@ describe DurationRange do
     its(:min) { should == 1.year }
     its(:max) { should == 5.years }
     its(:unit) { should == :years }
+  end
+end
+
+describe LongDurationRange do
+  subject { timerange }
+
+  let(:range) { (1..5) }
+
+  context 'invalid range unit' do  
+    it 'should not allow invalid time unit' do
+      expect { LongDurationRange.new range, :hours }.to raise_error
+    end
+  end
+
+  context 'valid range unit' do  
+    it 'should allow valid long time unit' do
+      expect { LongDurationRange.new range, :day }.to_not raise_error
+    end
+  end
+end
+
+describe ShortDurationRange do
+  subject { timerange }
+
+  let(:range) { (1..5) }
+
+  context 'invalid range unit' do  
+    it 'should not allow invalid time unit' do
+      expect { ShortDurationRange.new range, :day }.to raise_error
+    end
+  end
+
+  context 'valid range unit' do  
+    it 'should allow valid long time unit' do
+      expect { ShortDurationRange.new range, :hour }.to_not raise_error
+    end
   end
 end

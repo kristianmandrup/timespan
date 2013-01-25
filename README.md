@@ -324,6 +324,18 @@ dr.between?(4.days) # => true
 
 You can also use Range#intersect from *sugar-high* gem to test intersection of time ranges ;)
 
+The duration range by default supports the following units: [seconds, minutes, hours, days, weeks, months, years]
+
+You can subclass the DurationRange to supply your own list of time units to fit your particular scenario.
+
+This gem comes with two subclasses:
+
+`ShortDurationRange` and `LongDurationRange`
+
+They both override the method `#allowed_units` to provide a particular list:
+
+`ShortDurationRange` supports time ranges less than a day, whereas `LongDurationRange` only supports time ranges of a day or more.
+
 ## Client side helpers
 
 This gem now includes som javascript assets to assist in performing date and timespan (duration) calculations on the client side also:

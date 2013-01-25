@@ -23,8 +23,23 @@ class DurationRange < DelegateDecorator
   def initialize range, unit = :minutes
     range = (0..60) if range.min == nil || range.max == nil  
     super(range, except: %w{to_s to_str})
-    @unit = unit.to_s.pluralize.to_sym
+    unit = unit.to_s.pluralize.to_sym
+
+    unless allowed_unit? unit
+      raise ArgumentError, "Unit #{unit} not valid, only: #{allowed_units} are valid" 
+    end
+
+    @unit = unit
+    
     @range = range
+  end
+
+  def allowed_unit? unit
+    allowed_units.include? unit.to_sym
+  end
+
+  def allowed_units
+    [:seconds, :minutes, :hours, :days, :weeks, :months, :years]
   end
 
   def to_str
@@ -122,9 +137,21 @@ class DurationRange < DelegateDecorator
         end 
       end
     end
-
   end 
 end
+
+class LongDurationRange < DurationRange
+  def allowed_units
+    [:days, :weeks, :months, :years]
+  end
+end
+
+class ShortDurationRange < DurationRange
+  def allowed_units
+    [:seconds, :minutes, :hours]
+  end
+end  
+
 
 class Range
   [:seconds, :minutes, :hours, :days, :weeks, :months, :years].each do |unit|

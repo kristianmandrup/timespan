@@ -76,7 +76,7 @@ class Timespan
     end
 
     def custom_specify(name, operator, value, options = {})
-      puts "custom_specify: #{name}"
+      # puts "custom_specify: #{name}"
       timespan = value.__evolve_to_timespan__
       case operator
         when '$gte', '$gt', '$lt', '$lte', '$eq', '$between', '$btw'
@@ -97,7 +97,7 @@ class Timespan
         query['from']['$gte'] = Serializer.serialize_time(timespan.min)
         query['to']['$lte'] = Serializer.serialize_time(timespan.max)
       end
-      puts "query: #{query}"
+      # puts "query: #{query}"
       query
     end
   end
