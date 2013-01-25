@@ -5,7 +5,7 @@ Use Timespans in Ruby :)
 Will calculate time diff between two dates, then allow you to get the time difference in some time unit as a number.
 
 ```ruby
-	t = Timespan.new(:start => Date.today, :duration => 3.days.ago)
+	t = Timespan.new(:start => Date.today, :duration => 3.days)
 	t.to_days # => 3
 	t.to_weeks # => 0
 	t.to_secs # => 259200
