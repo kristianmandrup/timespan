@@ -82,7 +82,7 @@ class DurationRange < DelegateDecorator
   end
 
   def time
-    "#{min + max} #{unit}"
+    min == max ? "#{min} #{unit.to_s.singularize}" : "#{min}-#{max} #{unit}"
   end
 
   def between? duration
@@ -184,12 +184,6 @@ class DurationRange < DelegateDecorator
 end
 
 class LongDurationRange < DurationRange
-  # include Comparable
-
-  # def <=> other_dur_range
-  #   super
-  # end
-
   def length
     :long
   end
@@ -204,12 +198,6 @@ class LongDurationRange < DurationRange
 end
 
 class ShortDurationRange < DurationRange
-  # include Comparable
-
-  # def <=> other_dur_range
-  #   super
-  # end
-
   def length
     :short
   end
