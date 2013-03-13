@@ -1,3 +1,13 @@
+GIT
+  remote: git://github.com/technicalpickles/jeweler.git
+  revision: a6a204f974a109ef2a2ca8fe477558dabab1ead6
+  specs:
+    jeweler (1.8.4)
+      bundler (~> 1.0)
+      git (>= 1.2.5)
+      rake
+      rdoc
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -38,11 +48,6 @@ GEM
     git (1.2.5)
     hike (1.2.1)
     i18n (0.6.4)
-    jeweler (1.8.4)
-      bundler (~> 1.0)
-      git (>= 1.2.5)
-      rake
-      rdoc
     journey (1.0.4)
     json (1.7.7)
     mail (2.4.4)
@@ -121,16 +126,15 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport (>= 3.0.0)
-  bundler (>= 1.0.0)
+  bundler (>= 1.2.0)
   chronic
   chronic_duration
-  jeweler (>= 1.8.3)
+  jeweler (>= 1.8.4)!
   mongoid (>= 3.0)
   origin-selectable_ext (~> 0.1.1)
   rails (>= 3.1)
-  rdoc (>= 3.12)
   rspec (>= 2.8.0)
-  simplecov (>= 0.5)
+  simplecov (>= 0.7)
   spanner
   sugar-high (>= 0.7.3)
   xduration (>= 2.2)
