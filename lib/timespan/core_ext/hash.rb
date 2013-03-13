@@ -8,6 +8,16 @@ class Hash
 
   def __evolve_to_duration_range__
     range = Range.new (self['from'] || self[:from]), (self['to'] || self[:to])
-    ::DurationRange.new range, :seconds
+    length = self['length'] || self[:length]
+    clazz = case length.to_sym
+    when :long 
+      ::LongDurationRange
+    when :short 
+      ::ShortDurationRange
+    else
+      ::DurationRange
+    end
+
+    clazz.new range, (self['unit'] || self[:unit] || :seconds)
   end
 end

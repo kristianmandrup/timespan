@@ -324,6 +324,13 @@ dr.between?(4.days) # => true
 
 You can also use Range#intersect from *sugar-high* gem to test intersection of time ranges ;)
 
+See https://github.com/kristianmandrup/sugar-high/blob/master/spec/sugar-high/range_spec.rb
+
+```ruby
+date_range.intersect(other_date_range).should == intersecting_range
+subject.intersect(other).should == nil # if no intersection
+```
+
 The duration range by default supports the following units: [seconds, minutes, hours, days, weeks, months, years]
 
 You can subclass the DurationRange to supply your own list of time units to fit your particular scenario.

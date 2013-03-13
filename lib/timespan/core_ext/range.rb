@@ -18,6 +18,8 @@ class TimespanRange < DelegateDecorator
 end
 
 class DurationRange < DelegateDecorator
+  include Comparable
+
   attr_accessor :unit, :range
 
   def initialize range, unit = :minutes
@@ -34,6 +36,30 @@ class DurationRange < DelegateDecorator
     @range = range
   end
 
+  alias_method :units, :unit
+
+  def <=> other_dur_range
+    min_secs = self.min
+    max_secs = self.max
+    omin_secs = other_dur_range.min
+    omax_secs = other_dur_range.max
+
+    # puts "self: #{self.inspect} vs #{other_dur_range.inspect} #{other_dur_range.class}"
+
+    if min_secs == omin_secs && max_secs == omax_secs
+      return 0
+    end
+
+    if min_secs < omin_secs || (min_secs == omin_secs && max_secs < omax_secs) 
+      -1
+    else
+      1
+    end
+  end
+
+  def length
+    :default
+  end
 
   def self.allowed_unit? unit
     allowed_units.include? unit.to_sym
@@ -55,12 +81,8 @@ class DurationRange < DelegateDecorator
     range.min.nil? ? 'no duration range' : "#{range.min} to #{range.max} #{unit}"
   end
 
-  def __evolve_to_duration_range__
-    self
-  end
-
-  def mongoize
-    {:from => range.min.to_i, :to => range.max.to_i}
+  def time
+    "#{min + max} #{unit}"
   end
 
   def between? duration
@@ -71,6 +93,20 @@ class DurationRange < DelegateDecorator
       Duration.new duration
     end
     obj.total >= min && obj.total <= max
+  end
+
+  def to_hash
+    {:from => range.min.to_i, :to => range.max.to_i, unit: unit.to_s, length: length.to_s}
+  end
+
+  def mongoize
+    to_hash
+  end
+
+  protected
+
+  def __evolve_to_duration_range__
+    self
   end
 
   class << self
@@ -104,6 +140,8 @@ class DurationRange < DelegateDecorator
       
       demongoized = case object
       when Hash
+        object.__evolve_to_duration_range__
+      when Range
         object.__evolve_to_duration_range__
       else
         raise "Unable to demongoize DurationRange from: #{object}"
@@ -146,6 +184,16 @@ class DurationRange < DelegateDecorator
 end
 
 class LongDurationRange < DurationRange
+  # include Comparable
+
+  # def <=> other_dur_range
+  #   super
+  # end
+
+  def length
+    :long
+  end
+
   def self.allowed_units
     [:days, :weeks, :months, :years]
   end
@@ -156,6 +204,16 @@ class LongDurationRange < DurationRange
 end
 
 class ShortDurationRange < DurationRange
+  # include Comparable
+
+  # def <=> other_dur_range
+  #   super
+  # end
+
+  def length
+    :short
+  end
+
   def self.allowed_units
     [:seconds, :minutes, :hours]
   end
@@ -163,10 +221,13 @@ class ShortDurationRange < DurationRange
   def allowed_units
     ShortDurationRange.allowed_units
   end
-end  
-
+end
 
 class Range
+  def __evolve_to_duration_range__
+    ::DurationRange.new self, :seconds
+  end    
+
   [:seconds, :minutes, :hours, :days, :weeks, :months, :years].each do |unit|
     define_method "#{unit}!" do
       time_length = ::ShortDurationRange.allowed_unit?(unit.to_sym) ? :short : :long
