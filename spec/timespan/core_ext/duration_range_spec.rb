@@ -15,6 +15,45 @@ describe Range do
     specify { subject.min.should == 1.day }
     specify { subject.max.should == 5.days }
   end
+
+  describe 'create ShortDurationRange with hours(:short)' do
+    let(:range) { (1..5) }
+    let (:timerange) { range.hours(:short) }
+  
+    specify { subject.should be_a ShortDurationRange }
+
+    its(:min) { should be_a Fixnum }
+    its(:max) { should be_a Fixnum }
+
+    specify { subject.min.should == 1.hour }
+    specify { subject.max.should == 5.hours }
+  end
+
+  describe 'create LongDurationRange with weeks(:long)' do
+    let(:range) { (1..5) }
+    let (:timerange) { range.weeks(:long) }
+  
+    specify { subject.should be_a LongDurationRange }
+
+    its(:min) { should be_a Fixnum }
+    its(:max) { should be_a Fixnum }
+
+    specify { subject.min.should == 1.weeks }
+    specify { subject.max.should == 5.weeks }
+  end
+
+  describe 'create LongDurationRange with weeks!' do
+    let(:range) { (1..5) }
+    let (:timerange) { range.weeks! }
+  
+    specify { subject.should be_a LongDurationRange }
+
+    its(:min) { should be_a Fixnum }
+    its(:max) { should be_a Fixnum }
+
+    specify { subject.min.should == 1.weeks }
+    specify { subject.max.should == 5.weeks }
+  end
 end
 
 describe DurationRange do

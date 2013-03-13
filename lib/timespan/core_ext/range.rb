@@ -34,6 +34,11 @@ class DurationRange < DelegateDecorator
     @range = range
   end
 
+
+  def self.allowed_unit? unit
+    allowed_units.include? unit.to_sym
+  end
+
   def allowed_unit? unit
     allowed_units.include? unit.to_sym
   end
@@ -141,23 +146,49 @@ class DurationRange < DelegateDecorator
 end
 
 class LongDurationRange < DurationRange
-  def allowed_units
+  def self.allowed_units
     [:days, :weeks, :months, :years]
+  end
+
+  def allowed_units
+    LongDurationRange.allowed_units
   end
 end
 
 class ShortDurationRange < DurationRange
-  def allowed_units
+  def self.allowed_units
     [:seconds, :minutes, :hours]
+  end
+
+  def allowed_units
+    ShortDurationRange.allowed_units
   end
 end  
 
 
 class Range
   [:seconds, :minutes, :hours, :days, :weeks, :months, :years].each do |unit|
-    define_method unit do |type = :duration|
+    define_method "#{unit}!" do
+      time_length = ::ShortDurationRange.allowed_unit?(unit.to_sym) ? :short : :long
+      self.send(unit, time_length)
+    end
+
+    define_method unit do |type = :duration, subtype = nil|
       timerange = Range.new self.min.send(unit), self.max.send(unit)
-      type == :timespan ? TimespanRange.new(timerange, unit) : DurationRange.new(timerange, unit)      
+
+      subtype = type if [:long, :short].include? type.to_sym
+
+      if type != :timespan
+        time_range_class = if ::ShortDurationRange.allowed_unit? unit.to_sym
+          subtype == :short ? ::ShortDurationRange : ::DurationRange
+        elsif ::LongDurationRange.allowed_unit? unit.to_sym
+          subtype == :long  ? ::LongDurationRange : ::DurationRange
+        else
+          ::DurationRange
+        end
+      end
+
+      type == :timespan ? TimespanRange.new(timerange, unit) : time_range_class.new(timerange, unit)
     end
   end
 end

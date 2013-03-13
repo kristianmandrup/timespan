@@ -107,7 +107,7 @@ da:
 
 ## Timespan for Mongoid
 
-Tested and works with Mongoid 2.4 and 3.0+
+Tested and works with Mongoid 2.4 and 3.0+ (also tested with Mongoid 4)
 
 Custom Timespan datatype:
 
@@ -335,6 +335,21 @@ This gem comes with two subclasses:
 They both override the method `#allowed_units` to provide a particular list:
 
 `ShortDurationRange` supports time ranges less than a day, whereas `LongDurationRange` only supports time ranges of a day or more.
+
+To create a `LongDurationRange` or `ShortDurationRange` from a range, you can use the macros:
+
+```ruby
+long_time_range = (1..5).days(:long)
+
+# or simply
+
+long_time_range = (1..5).days!
+
+# and for short time range
+
+long_time_range = (1..5).minutes(:short)
+short_time_range = (1..5).hours!
+```
 
 ## Client side helpers
 
