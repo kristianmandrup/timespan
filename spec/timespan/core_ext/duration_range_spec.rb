@@ -4,52 +4,56 @@ describe Range do
   subject { timerange }
 
   describe 'create DurationRange' do
-    let(:range) { (1..5) }
-    let (:timerange) { range.days }
+    let(:range)       { (1..5) }
+    let (:timerange)  { range.days }
   
     specify { subject.should be_a DurationRange }
 
-    its(:min) { should be_a Fixnum }
-    its(:max) { should be_a Fixnum }
+    its(:min)   { should be_a Fixnum }
+    its(:max)   { should be_a Fixnum }
+    its(:unit)  { should == :days }
 
     specify { subject.min.should == 1.day }
     specify { subject.max.should == 5.days }
   end
 
   describe 'create ShortDurationRange with hours(:short)' do
-    let(:range) { (1..5) }
-    let (:timerange) { range.hours(:short) }
+    let(:range)       { (1..5) }
+    let (:timerange)  { range.hours(:short) }
   
     specify { subject.should be_a ShortDurationRange }
 
-    its(:min) { should be_a Fixnum }
-    its(:max) { should be_a Fixnum }
+    its(:min)   { should be_a Fixnum }
+    its(:max)   { should be_a Fixnum }
+    its(:unit)  { should == :hours }
 
     specify { subject.min.should == 1.hour }
     specify { subject.max.should == 5.hours }
   end
 
   describe 'create LongDurationRange with weeks(:long)' do
-    let(:range) { (1..5) }
-    let (:timerange) { range.weeks(:long) }
+    let(:range)       { (1..5) }
+    let (:timerange)  { range.weeks(:long) }
   
     specify { subject.should be_a LongDurationRange }
 
-    its(:min) { should be_a Fixnum }
-    its(:max) { should be_a Fixnum }
+    its(:min)   { should be_a Fixnum }
+    its(:max)   { should be_a Fixnum }
+    its(:unit)  { should == :weeks }
 
     specify { subject.min.should == 1.weeks }
     specify { subject.max.should == 5.weeks }
   end
 
   describe 'create LongDurationRange with weeks!' do
-    let(:range) { (1..5) }
-    let (:timerange) { range.weeks! }
+    let(:range)       { (1..5) }
+    let (:timerange)  { range.weeks! }
   
     specify { subject.should be_a LongDurationRange }
 
-    its(:min) { should be_a Fixnum }
-    its(:max) { should be_a Fixnum }
+    its(:min)   { should be_a Fixnum }
+    its(:max)   { should be_a Fixnum }
+    its(:unit)  { should == :weeks }
 
     specify { subject.min.should == 1.weeks }
     specify { subject.max.should == 5.weeks }
