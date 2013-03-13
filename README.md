@@ -51,7 +51,9 @@ Internally Timespan uses Spanner to parse duration strings.
 
 `Spanner.parse('23 hours 12 minutes')
 
-## Duration (ruby-duration)
+## Duration (xduration)
+
+The type `Duration` is supported via the [xduration](https://github.com/kristianmandrup/xduration) gem, which extends `ruby-duration` with additional macros, specific time unit classes and supports longer duration time periods such as weeks, months and years.
 
 ```ruby
 Duration.new(100) => #<Duration: minutes=1, seconds=40, total=100>
@@ -89,7 +91,7 @@ require 'duration/mongoid'
 
 class MyModel
   include Mongoid::Document
-  field :duration, type => Duration
+  field :duration, type => ::Duration
 end
 ```
 
@@ -252,6 +254,13 @@ class Account
 `Account.period_between(6.days.ago, 1.day.ago)`
 
 See the `mongoid_search_spec.rb` for examples:
+
+## Time lord
+
+This gem can be used in combination with [Time lord](https://github.com/krainboltgreene/time-lord), which has a lot of functionality for time periods, conversions, calculations and outputting to strings etc.
+
+Some initial support for `time-lord` has been added, but not yet tested. 
+Please help out ;)
 
 ## Chronic duration
 

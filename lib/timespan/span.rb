@@ -13,6 +13,8 @@ class Timespan
 					duration.duration
 				when Duration
 					duration
+				when TimeLord::Period
+					Duration.new start_date: duration.beginning, end_date: duration.ending
 				when Hash
 					Duration.new duration
 				when String

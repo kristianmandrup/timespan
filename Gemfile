@@ -1,14 +1,16 @@
-source 'http://rubygems.org'
+source 'https://rubygems.org'
 
 gem 'chronic'
 gem 'chronic_duration'
 gem 'activesupport', '>= 3.0.0'
 gem 'spanner'
 gem 'sugar-high', '>= 0.7.3' # for range intersect
-gem 'xduration',  '>= 2.2'
+
+gem 'xduration',     '>= 3.0.0' # ruby-duration with extensions
+gem 'time-lord',     '>= 1.0.0'
 
 group :test, :development do
-  gem "rspec", 		">= 2.8.0"
+  gem "rspec", 		">= 2.12.0"
   gem 'rails', 		'>= 3.1'
   # gem 'mongoid',  '>= 2.4'
   # gem 'bson',     '>= 1.6'
