@@ -65,10 +65,9 @@ class Timespan
 		@is_new = false
 	end
 
-	def self.duration_classes
+	def duration_classes
 		[::Duration, ::String]
 	end
-
 
 	def asap!
 		@asap = true

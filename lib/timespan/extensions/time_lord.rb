@@ -1,7 +1,7 @@
 require 'time-lord'
 
 class Timespan
-  def self.duration_classes
+  def duration_classes
     [::TimeLord::Period, ::Duration, ::String]
   end
 

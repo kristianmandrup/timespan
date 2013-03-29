@@ -1,14 +1,15 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'my_gem/version'
+require 'timespan/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "my_gem"
-  spec.version       = MyGem::VERSION
+  spec.name          = "timespan"
+  spec.version       = Timespan::VERSION
   spec.authors       = ["Kristian Mandrup"]
   spec.date          = "2013-03-13"
-  spec.description   = "Makes it easy to calculate time distance in different units"
+  spec.summary       = "Calculate and store time distance (Mongoid only)"
+  spec.description   = "Makes it easy to store time duration, make calculations and comparions and store the duration using Mongoid"
   spec.email         = "kmandrup@gmail.com"
   spec.license       = "MIT"
 
