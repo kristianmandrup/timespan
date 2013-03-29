@@ -1,3 +1,7 @@
+## 0.5.9
+
+* Switched from Jeweler to Bundler
+
 ## 0.5.8
 
 * Extracted experimental time-lord integration into separate file
