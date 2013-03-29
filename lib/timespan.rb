@@ -2,7 +2,6 @@ require 'duration'
 require 'chronic'
 require 'chronic_duration'
 require 'spanner'
-require 'time-lord'
 
 # Range intersection that works with dates!
 require 'sugar-high/range'
@@ -57,8 +56,7 @@ class Timespan
 
 		options = {:duration => options} if options.kind_of? Numeric
 		
-		case options
-		when TimeLord::Period, ::Duration, String
+		if duration_classes.any?{|clazz| options.kind_of? clazz }
 			options = {:duration => options}
 		end
 		
@@ -66,6 +64,11 @@ class Timespan
 		
 		@is_new = false
 	end
+
+	def self.duration_classes
+		[::Duration, ::String]
+	end
+
 
 	def asap!
 		@asap = true
@@ -195,10 +198,6 @@ class Timespan
 			time.to_time
 		when Duration
 			(Time.now + time).to_time
-		when TimeLord::Period
-			(Time.now + time).to_time
-		when TimeLord::Time
-			(Time.now + time.moment).to_time
 		when Time
 			time
 		else
@@ -209,7 +208,7 @@ class Timespan
 	protected
 
 	def valid_time_classes
-		[String, Duration, Date, Time, DateTime, TimeLord::Period, TimeLord::Time]
+		[String, Duration, Date, Time, DateTime]
 	end
 
 	attr_reader :init_options

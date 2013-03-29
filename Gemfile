@@ -7,7 +7,7 @@ gem 'spanner'
 gem 'sugar-high', '>= 0.7.3' # for range intersect
 
 gem 'xduration',     '>= 3.0.0' # ruby-duration with extensions
-gem 'time-lord',     '>= 1.0.0'
+# gem 'time-lord',     '>= 1.0.0'
 
 group :test, :development do
   gem "rspec", 		">= 2.12.0"

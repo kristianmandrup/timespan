@@ -56,8 +56,6 @@ class Timespan
       	time.to_time.to_i
       when Integer
       	seconds <=> time
-      when Timelord::Time
-        seconds <=> time.moment
       when ActiveSupport::Duration
         seconds <=> time.to_i
       end

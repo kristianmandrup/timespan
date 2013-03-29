@@ -262,6 +262,16 @@ This gem can be used in combination with [Time lord](https://github.com/krainbol
 Some initial support for `time-lord` has been added, but not yet tested. 
 Please help out ;)
 
+Since integration with *time-lord* is not yet complete and tested, to use the experimental features, use:
+
+`require 'timespan/extensions/time_lord'`
+
+There are known issues with time_lord so that:
+
+`4.days.from_now` returns a date far into the future!
+
+I hope this gets fixed soon!
+
 ## Chronic duration
 
 Is used to parse duration strings if Spanner can't be handle it
