@@ -1,8 +1,9 @@
 .bundle/
 log/*.log
 pkg/
-Gemfile.lock
-.DS_Store
 spec/dummy/logs
 spec/dummy/public
 spec/dummy/temp
+
+Gemfile.lock
+.DS_Store

@@ -30,6 +30,15 @@ Will calculate time diff between two dates, then allow you to get the time diffe
 
 See specs for more examples of usage
 
+## For use with Mongoid
+
+```ruby
+gem 'mongoid'
+gem 'origin-selectable_ext'
+
+gem 'timespan'
+```
+
 ## Comparison
 
 ```ruby
