@@ -1,3 +1,4 @@
+require 'active_support/dependencies/autoload'
 require 'duration'
 require 'chronic'
 require 'chronic_duration'
